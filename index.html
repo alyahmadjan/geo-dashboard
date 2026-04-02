@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geo Dashboard MVP+</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="./styles/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Geo Dashboard MVP+</h1>
+      <p>Leaflet + OpenStreetMap with filters, heatmap, drill-down analytics, and API-ready data loading.</p>
+    </div>
+
+    <div class="top-actions">
+      <label class="toggle">
+        <input id="heatmapToggle" type="checkbox" checked />
+        <span>Heatmap</span>
+      </label>
+      <button id="resetBtn" class="btn">Reset filters</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel">
+      <h2>Filters</h2>
+
+      <div class="field">
+        <label for="searchInput">Search city</label>
+        <input id="searchInput" type="search" placeholder="Type a city name" />
+      </div>
+
+      <div class="field">
+        <label for="countrySelect">Country</label>
+        <select id="countrySelect"></select>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="minPop">Min population</label>
+          <input id="minPop" type="number" min="0" step="100000" placeholder="0" />
+        </div>
+        <div class="field">
+          <label for="maxPop">Max population</label>
+          <input id="maxPop" type="number" min="0" step="100000" placeholder="No limit" />
+        </div>
+      </div>
+
+      <div class="stats" id="summaryStats"></div>
+
+      <h2>Visible cities</h2>
+      <ul id="cityList" class="city-list"></ul>
+    </aside>
+
+    <section class="map-wrap">
+      <div id="map"></div>
+      <div id="detailsPanel" class="details-panel">
+        <div class="details-empty">
+          <h3>Select a city</h3>
+          <p>Click a marker or a city in the list to view drill-down analytics.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

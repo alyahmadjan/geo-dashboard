@@ -78,13 +78,5 @@
     "lat": 24.8607,
     "lng": 67.0011,
     "population": 18868021
-  },
-  {
-    "id": 11,
-    "name": "Anchorage",
-    "country": "USA",
-    "lat": 61.2181,
-    "lng": -149.9003,
-    "population": 287155
   }
 ]

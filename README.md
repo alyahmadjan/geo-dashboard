@@ -5,6 +5,7 @@ Leaflet + OpenStreetMap demo with:
 - heatmap toggle
 - drill-down analytics panel
 - API-ready data service
+- 
 
 ## Structure
 

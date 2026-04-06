@@ -1,0 +1,542 @@
+[
+  {
+    "id": "k1",
+    "entityType": "city",
+    "entityId": "c1",
+    "name": "Revenue growth",
+    "value": 9,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k2",
+    "entityType": "city",
+    "entityId": "c1",
+    "name": "Incident closure",
+    "value": 85,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k3",
+    "entityType": "office",
+    "entityId": "c1-o1",
+    "name": "On-time delivery",
+    "value": 91,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k4",
+    "entityType": "office",
+    "entityId": "c1-o1",
+    "name": "CSAT",
+    "value": 4.7,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k5",
+    "entityType": "office",
+    "entityId": "c1-o2",
+    "name": "CSAT",
+    "value": 4.2,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k6",
+    "entityType": "city",
+    "entityId": "c2",
+    "name": "Revenue growth",
+    "value": 10,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k7",
+    "entityType": "city",
+    "entityId": "c2",
+    "name": "Incident closure",
+    "value": 86,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k8",
+    "entityType": "office",
+    "entityId": "c2-o1",
+    "name": "On-time delivery",
+    "value": 92,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k9",
+    "entityType": "office",
+    "entityId": "c2-o1",
+    "name": "CSAT",
+    "value": 4.7,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k10",
+    "entityType": "office",
+    "entityId": "c2-o2",
+    "name": "CSAT",
+    "value": 4.2,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k11",
+    "entityType": "city",
+    "entityId": "c3",
+    "name": "Revenue growth",
+    "value": 11,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k12",
+    "entityType": "city",
+    "entityId": "c3",
+    "name": "Incident closure",
+    "value": 87,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k13",
+    "entityType": "office",
+    "entityId": "c3-o1",
+    "name": "On-time delivery",
+    "value": 93,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k14",
+    "entityType": "office",
+    "entityId": "c3-o1",
+    "name": "CSAT",
+    "value": 4.7,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k15",
+    "entityType": "office",
+    "entityId": "c3-o2",
+    "name": "CSAT",
+    "value": 4.2,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k16",
+    "entityType": "city",
+    "entityId": "c4",
+    "name": "Revenue growth",
+    "value": 12,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k17",
+    "entityType": "city",
+    "entityId": "c4",
+    "name": "Incident closure",
+    "value": 88,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k18",
+    "entityType": "office",
+    "entityId": "c4-o1",
+    "name": "On-time delivery",
+    "value": 94,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k19",
+    "entityType": "office",
+    "entityId": "c4-o1",
+    "name": "CSAT",
+    "value": 4.7,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k20",
+    "entityType": "office",
+    "entityId": "c4-o2",
+    "name": "CSAT",
+    "value": 4.2,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k21",
+    "entityType": "city",
+    "entityId": "c5",
+    "name": "Revenue growth",
+    "value": 13,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k22",
+    "entityType": "city",
+    "entityId": "c5",
+    "name": "Incident closure",
+    "value": 89,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k23",
+    "entityType": "office",
+    "entityId": "c5-o1",
+    "name": "On-time delivery",
+    "value": 95,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k24",
+    "entityType": "office",
+    "entityId": "c5-o1",
+    "name": "CSAT",
+    "value": 4.7,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k25",
+    "entityType": "office",
+    "entityId": "c5-o2",
+    "name": "CSAT",
+    "value": 4.2,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k26",
+    "entityType": "city",
+    "entityId": "c6",
+    "name": "Revenue growth",
+    "value": 14,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k27",
+    "entityType": "city",
+    "entityId": "c6",
+    "name": "Incident closure",
+    "value": 90,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k28",
+    "entityType": "office",
+    "entityId": "c6-o1",
+    "name": "On-time delivery",
+    "value": 96,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k29",
+    "entityType": "office",
+    "entityId": "c6-o1",
+    "name": "CSAT",
+    "value": 4.7,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k30",
+    "entityType": "office",
+    "entityId": "c6-o2",
+    "name": "CSAT",
+    "value": 4.2,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k31",
+    "entityType": "city",
+    "entityId": "c7",
+    "name": "Revenue growth",
+    "value": 15,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k32",
+    "entityType": "city",
+    "entityId": "c7",
+    "name": "Incident closure",
+    "value": 91,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k33",
+    "entityType": "office",
+    "entityId": "c7-o1",
+    "name": "On-time delivery",
+    "value": 97,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k34",
+    "entityType": "office",
+    "entityId": "c7-o1",
+    "name": "CSAT",
+    "value": 4.7,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k35",
+    "entityType": "office",
+    "entityId": "c7-o2",
+    "name": "CSAT",
+    "value": 4.2,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k36",
+    "entityType": "city",
+    "entityId": "c8",
+    "name": "Revenue growth",
+    "value": 16,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k37",
+    "entityType": "city",
+    "entityId": "c8",
+    "name": "Incident closure",
+    "value": 92,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k38",
+    "entityType": "office",
+    "entityId": "c8-o1",
+    "name": "On-time delivery",
+    "value": 90,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k39",
+    "entityType": "office",
+    "entityId": "c8-o1",
+    "name": "CSAT",
+    "value": 4.7,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k40",
+    "entityType": "office",
+    "entityId": "c8-o2",
+    "name": "CSAT",
+    "value": 4.2,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k41",
+    "entityType": "city",
+    "entityId": "c9",
+    "name": "Revenue growth",
+    "value": 17,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k42",
+    "entityType": "city",
+    "entityId": "c9",
+    "name": "Incident closure",
+    "value": 93,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k43",
+    "entityType": "office",
+    "entityId": "c9-o1",
+    "name": "On-time delivery",
+    "value": 91,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k44",
+    "entityType": "office",
+    "entityId": "c9-o1",
+    "name": "CSAT",
+    "value": 4.7,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k45",
+    "entityType": "office",
+    "entityId": "c9-o2",
+    "name": "CSAT",
+    "value": 4.2,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k46",
+    "entityType": "city",
+    "entityId": "c10",
+    "name": "Revenue growth",
+    "value": 18,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k47",
+    "entityType": "city",
+    "entityId": "c10",
+    "name": "Incident closure",
+    "value": 94,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k48",
+    "entityType": "office",
+    "entityId": "c10-o1",
+    "name": "On-time delivery",
+    "value": 92,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k49",
+    "entityType": "office",
+    "entityId": "c10-o1",
+    "name": "CSAT",
+    "value": 4.7,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k50",
+    "entityType": "office",
+    "entityId": "c10-o2",
+    "name": "CSAT",
+    "value": 4.2,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k51",
+    "entityType": "city",
+    "entityId": "c11",
+    "name": "Revenue growth",
+    "value": 17,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k52",
+    "entityType": "city",
+    "entityId": "c11",
+    "name": "Incident closure",
+    "value": 93,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k53",
+    "entityType": "office",
+    "entityId": "c11-o1",
+    "name": "On-time delivery",
+    "value": 96,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k54",
+    "entityType": "office",
+    "entityId": "c11-o1",
+    "name": "CSAT",
+    "value": 4.8,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k55",
+    "entityType": "office",
+    "entityId": "c11-o2",
+    "name": "CSAT",
+    "value": 4.5,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k56",
+    "entityType": "city",
+    "entityId": "c12",
+    "name": "Revenue growth",
+    "value": 16,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k57",
+    "entityType": "city",
+    "entityId": "c12",
+    "name": "Incident closure",
+    "value": 92,
+    "unit": "%",
+    "period": "YTD"
+  },
+  {
+    "id": "k58",
+    "entityType": "office",
+    "entityId": "c12-o1",
+    "name": "On-time delivery",
+    "value": 95,
+    "unit": "%",
+    "period": "Monthly"
+  },
+  {
+    "id": "k59",
+    "entityType": "office",
+    "entityId": "c12-o1",
+    "name": "CSAT",
+    "value": 4.7,
+    "unit": "/5",
+    "period": "Monthly"
+  },
+  {
+    "id": "k60",
+    "entityType": "office",
+    "entityId": "c12-o2",
+    "name": "CSAT",
+    "value": 4.3,
+    "unit": "/5",
+    "period": "Monthly"
+  }
+]

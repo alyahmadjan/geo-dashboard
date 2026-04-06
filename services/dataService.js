@@ -1,24 +1,66 @@
-const DEFAULT_DATA_URL = './data/cities.json';
+const FILES = {
+  cities: 'cities.json',
+  offices: 'offices.json',
+  incidents: 'incidents.json',
+  sales: 'sales.json',
+  kpis: 'kpis.json',
+  settings: 'settings.json',
+};
 
-function getConfiguredDataUrl() {
-  if (typeof window !== 'undefined' && window.GEO_DASHBOARD_API_URL) {
-    return window.GEO_DASHBOARD_API_URL;
+function getBaseUrl() {
+  if (typeof window !== 'undefined' && window.GEO_DASHBOARD_API_BASE_URL) {
+    return String(window.GEO_DASHBOARD_API_BASE_URL).replace(/\/$/, '');
   }
-  return DEFAULT_DATA_URL;
+
+  return './data';
 }
 
-export async function fetchCities() {
-  const dataUrl = getConfiguredDataUrl();
-  const response = await fetch(dataUrl, { cache: 'no-store' });
+async function fetchJson(url) {
+  const response = await fetch(url, { cache: 'no-store' });
 
   if (!response.ok) {
-    throw new Error(`Failed to load city data from ${dataUrl}: ${response.status} ${response.statusText}`);
+    throw new Error(`Failed to load ${url}: ${response.status} ${response.statusText}`);
   }
 
-  const payload = await response.json();
-  return Array.isArray(payload) ? payload : (payload.cities ?? []);
+  return response.json();
 }
 
-export function getCountryOptions(cities) {
-  return ['All countries', ...new Set(cities.map((city) => city.country).sort())];
+export async function loadDataset(name) {
+  if (!FILES[name]) {
+    throw new Error(`Unknown dataset requested: ${name}`);
+  }
+
+  const baseUrl = getBaseUrl();
+  const resourceUrl = `${baseUrl}/${FILES[name]}`;
+  const payload = await fetchJson(resourceUrl);
+
+  if (name === 'settings') {
+    return payload && typeof payload === 'object' ? payload : {};
+  }
+
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  return payload?.[name] ?? payload?.data ?? [];
+}
+
+export async function loadAllData() {
+  const [cities, offices, incidents, sales, kpis, settings] = await Promise.all([
+    loadDataset('cities'),
+    loadDataset('offices'),
+    loadDataset('incidents'),
+    loadDataset('sales'),
+    loadDataset('kpis'),
+    loadDataset('settings'),
+  ]);
+
+  return {
+    cities,
+    offices,
+    incidents,
+    sales,
+    kpis,
+    settings: settings && typeof settings === 'object' ? settings : {},
+  };
 }

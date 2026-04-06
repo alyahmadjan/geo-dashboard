@@ -1,255 +1,429 @@
-import { fetchCities, getCountryOptions } from './services/dataService.js';
+import { loadAllData } from './services/dataService.js';
+import {
+  buildCityMetrics,
+  buildFilteredOverview,
+  buildOfficeMetrics,
+  buildOverview,
+  filterCities,
+  getOfficesForCity,
+  summarizeKpisForDisplay,
+  uniqueCountries,
+} from './services/filterService.js';
+import { createMapService } from './services/mapService.js';
+import { createDetailsPanel } from './components/sidebar/detailsPanel.js';
+import { createLayerControls } from './components/filters/layerControls.js';
 
-const state = {
-  allCities: [],
-  filteredCities: [],
-  map: null,
-  markerLayer: null,
-  heatLayer: null,
-  selectedCityId: null,
+const defaultFilters = {
+  cityQuery: '',
+  country: 'all',
 };
 
-function formatPopulation(value) {
-  return new Intl.NumberFormat('en-US').format(value);
+const state = {
+  data: null,
+  layer: 'city',
+  selectedCityId: null,
+  selectedOfficeId: null,
+  filters: { ...defaultFilters },
+  mapService: null,
+  detailsPanel: null,
+  layerControls: null,
+};
+
+function getCityById(cityId) {
+  return state.data?.cities.find((city) => city.id === cityId) || null;
 }
 
-function formatNumber(value) {
-  return new Intl.NumberFormat('en-US').format(Math.round(value));
+function getOfficeById(officeId) {
+  return state.data?.offices.find((office) => office.id === officeId) || null;
 }
 
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
+function clearSelection() {
+  state.selectedCityId = null;
+  state.selectedOfficeId = null;
 }
 
-function buildAnalytics(city) {
-  const offices = Math.max(1, Math.round(city.population / 2000000));
-  const staff = Math.max(25, Math.round(city.population / 9000));
-  const incidents = Math.max(1, Math.round(city.population / 1800000));
-  const activityScore = clamp(Math.round((city.population / 15000000) * 100), 8, 100);
-
-  return { offices, staff, incidents, activityScore };
+function resetFilters() {
+  state.filters = { ...defaultFilters };
 }
 
-function getFilters() {
-  return {
-    search: document.getElementById('searchInput').value.trim().toLowerCase(),
-    country: document.getElementById('countrySelect').value,
-    minPop: Number(document.getElementById('minPop').value || 0),
-    maxPop: Number(document.getElementById('maxPop').value || Number.MAX_SAFE_INTEGER),
-    heatmapOn: document.getElementById('heatmapToggle').checked,
-  };
+function getVisibleCities() {
+  return filterCities(state.data?.cities || [], state.filters);
 }
 
-function filterCities(cities, filters) {
-  return cities.filter((city) => {
-    const matchesSearch = !filters.search || city.name.toLowerCase().includes(filters.search);
-    const matchesCountry = filters.country === 'All countries' || city.country === filters.country;
-    const matchesMin = city.population >= filters.minPop;
-    const matchesMax = city.population <= filters.maxPop;
-    return matchesSearch && matchesCountry && matchesMin && matchesMax;
-  });
-}
+function getVisibleOffices() {
+  if (!state.data) return [];
 
-function renderCountrySelect(cities) {
-  const select = document.getElementById('countrySelect');
-  const options = getCountryOptions(cities);
-  select.innerHTML = options.map((country) => `<option value="${country}">${country}</option>`).join('');
-}
+  const country = String(state.filters.country || 'all');
+  const baseOffices = state.data.offices || [];
+  const selectedOffice = state.selectedOfficeId ? getOfficeById(state.selectedOfficeId) : null;
+  const selectedCityId = state.selectedCityId || selectedOffice?.cityId || null;
 
-function renderSummary(cities) {
-  const summary = document.getElementById('summaryStats');
-  const totalPopulation = cities.reduce((sum, city) => sum + city.population, 0);
-  summary.innerHTML = `
-    <div><b>${cities.length}</b> cities visible</div>
-    <div><b>${formatPopulation(totalPopulation)}</b> total population</div>
-  `;
-}
-
-function renderCityList(cities) {
-  const list = document.getElementById('cityList');
-  list.innerHTML = '';
-
-  if (!cities.length) {
-    list.innerHTML = '<li class="city-item"><strong>No results</strong><span>Try adjusting the filters.</span></li>';
-    return;
-  }
-
-  cities.forEach((city) => {
-    const item = document.createElement('li');
-    item.className = `city-item${state.selectedCityId === city.id ? ' active' : ''}`;
-    item.innerHTML = `
-      <strong>${city.name}</strong>
-      <span>${city.country}</span>
-      <small>Population: ${formatPopulation(city.population)}</small>
-    `;
-    item.addEventListener('click', () => selectCity(city));
-    list.appendChild(item);
-  });
-}
-
-function renderDetails(city) {
-  const panel = document.getElementById('detailsPanel');
-  if (!city) {
-    panel.innerHTML = `
-      <div class="details-empty">
-        <h3>Select a city</h3>
-        <p>Click a marker or a city in the list to view drill-down analytics.</p>
-      </div>
-    `;
-    return;
-  }
-
-  const analytics = buildAnalytics(city);
-  panel.innerHTML = `
-    <div class="details-card">
-      <h3>${city.name}</h3>
-      <p>${city.country}</p>
-      <div class="details-metrics">
-        <div class="metric"><b>Population</b><span>${formatPopulation(city.population)}</span></div>
-        <div class="metric"><b>Offices (estimate)</b><span>${formatNumber(analytics.offices)}</span></div>
-        <div class="metric"><b>Staff (estimate)</b><span>${formatNumber(analytics.staff)}</span></div>
-        <div class="metric"><b>Incidents (estimate)</b><span>${formatNumber(analytics.incidents)}</span></div>
-        <div class="metric"><b>Activity score</b><span>${analytics.activityScore}/100</span></div>
-      </div>
-    </div>
-  `;
-}
-
-function selectCity(city) {
-  state.selectedCityId = city.id;
-  renderCityList(state.filteredCities);
-  renderDetails(city);
-  state.map.flyTo([city.lat, city.lng], Math.max(state.map.getZoom(), 5), { duration: 0.6 });
-}
-
-function clearLayers() {
-  if (state.markerLayer && typeof state.markerLayer.clearLayers === 'function') {
-    state.markerLayer.clearLayers();
-  }
-
-  // leaflet.heat layers do not expose clearLayers(); reset points instead.
-  if (state.heatLayer && typeof state.heatLayer.setLatLngs === 'function') {
-    state.heatLayer.setLatLngs([]);
-  }
-}
-
-function renderMap(cities) {
-  clearLayers();
-
-  const heatPoints = [];
-  const bounds = [];
-
-  cities.forEach((city) => {
-    const latLng = [city.lat, city.lng];
-    bounds.push(latLng);
-    heatPoints.push([city.lat, city.lng, Math.max(0.2, city.population / 15000000)]);
-
-    const analytics = buildAnalytics(city);
-    const marker = L.circleMarker(latLng, {
-      radius: clamp(city.population / 1000000, 6, 18),
-      weight: 1,
-      color: '#1d4ed8',
-      fillColor: '#2563eb',
-      fillOpacity: 0.75,
-    });
-
-    marker.bindPopup(`
-      <div class="popup">
-        <h3>${city.name}</h3>
-        <p><strong>Country:</strong> ${city.country}</p>
-        <p><strong>Population:</strong> ${formatPopulation(city.population)}</p>
-        <p><strong>Activity score:</strong> ${analytics.activityScore}/100</p>
-      </div>
-    `);
-
-    marker.on('click', () => selectCity(city));
-    marker.addTo(state.markerLayer);
+  const filteredByCountry = baseOffices.filter((office) => {
+    const city = getCityById(office.cityId);
+    return country === 'all' || city?.country === country;
   });
 
-  if (heatPoints.length) {
-    state.heatLayer.setLatLngs(heatPoints);
-    if (bounds.length) {
-      state.map.fitBounds(bounds, { padding: [30, 30] });
-    }
+  if (selectedCityId) {
+    return filteredByCountry.filter((office) => office.cityId === selectedCityId);
   }
+
+  return filteredByCountry;
 }
 
-function applyFilters() {
-  const filters = getFilters();
-  state.filteredCities = filterCities(state.allCities, filters);
+function getVisibleKpis(visibleCities) {
+  if (!state.data) return [];
 
-  renderSummary(state.filteredCities);
-  renderCityList(state.filteredCities);
-  renderMap(state.filteredCities);
-
-  if (!filters.heatmapOn) {
-    state.map.removeLayer(state.heatLayer);
-  } else if (!state.map.hasLayer(state.heatLayer)) {
-    state.heatLayer.addTo(state.map);
+  if (state.selectedOfficeId) {
+    return buildOfficeMetrics(state.data, state.selectedOfficeId).kpis;
   }
 
   if (state.selectedCityId) {
-    const selected = state.filteredCities.find((city) => city.id === state.selectedCityId);
-    if (!selected) {
-      state.selectedCityId = null;
-      renderDetails(null);
+    return buildCityMetrics(state.data, state.selectedCityId).kpis;
+  }
+
+  return buildFilteredOverview(state.data, visibleCities).kpis;
+}
+
+function renderView(options = {}) {
+  if (!state.data || !state.mapService || !state.detailsPanel) {
+    return;
+  }
+
+  const overview = buildOverview(state.data);
+  const visibleCities = getVisibleCities();
+  const visibleOffices = getVisibleOffices();
+  const countries = uniqueCountries(state.data.cities);
+  const visibleKpis = getVisibleKpis(visibleCities);
+  const visibleKpisForDisplay = state.layer === 'city' ? summarizeKpisForDisplay(visibleKpis) : visibleKpis;
+
+  if (state.layer === 'city') {
+    if (state.selectedOfficeId) {
+      const office = getOfficeById(state.selectedOfficeId);
+      if (!office) {
+        clearSelection();
+        renderView(options);
+        return;
+      }
+
+      const city = getCityById(office.cityId);
+      if (!city) {
+        clearSelection();
+        renderView(options);
+        return;
+      }
+
+      const metrics = buildOfficeMetrics(state.data, office.id);
+      state.mapService.renderOffices(visibleOffices, {
+        getCityById,
+        onOfficeClick: handleOfficeClick,
+      });
+      state.mapService.openOfficePopup(office.id);
+      state.detailsPanel.renderOffice({
+        office,
+        city,
+        metrics,
+        onBack: () => {
+          state.selectedOfficeId = null;
+          renderView();
+        },
+        backLabel: 'Back to city',
+      });
+      restoreSearchFocus(options);
+      return;
+    }
+
+    if (state.selectedCityId) {
+      const city = getCityById(state.selectedCityId);
+      if (!city) {
+        clearSelection();
+        renderView(options);
+        return;
+      }
+
+      const metrics = buildCityMetrics(state.data, city.id);
+      state.mapService.renderOffices(metrics.offices, {
+        getCityById,
+        onOfficeClick: handleOfficeClick,
+      });
+      state.detailsPanel.renderCity({
+        city,
+        metrics,
+        cities: state.data.cities,
+        countries,
+        filters: state.filters,
+        visibleCities,
+        visibleKpis: visibleKpisForDisplay,
+        onCitySelect: handleCityClick,
+        onOfficeClick: handleOfficeClick,
+        onCityQueryChange: updateCityQuery,
+        onCountryChange: updateCountryFilter,
+      });
+      restoreSearchFocus(options);
+      return;
+    }
+
+    state.mapService.renderCities(visibleCities, {
+      onCityClick: handleCityClick,
+    });
+    state.detailsPanel.renderOverview({
+      overview: buildFilteredOverview(state.data, visibleCities),
+      cities: state.data.cities,
+      countries,
+      filters: state.filters,
+      visibleCities,
+      visibleKpis: visibleKpisForDisplay,
+      onCitySelect: handleCityClick,
+      onCityQueryChange: updateCityQuery,
+      onCountryChange: updateCountryFilter,
+    });
+    restoreSearchFocus(options);
+    return;
+  }
+
+  if (state.selectedOfficeId) {
+    const selectedOfficeVisible = visibleOffices.some((office) => office.id === state.selectedOfficeId);
+    if (!selectedOfficeVisible) {
+      state.selectedOfficeId = null;
     }
   }
-}
 
-function bindControls() {
-  ['searchInput', 'countrySelect', 'minPop', 'maxPop'].forEach((id) => {
-    document.getElementById(id).addEventListener('input', applyFilters);
-    document.getElementById(id).addEventListener('change', applyFilters);
-  });
-
-  document.getElementById('heatmapToggle').addEventListener('change', () => {
-    if (document.getElementById('heatmapToggle').checked) {
-      state.map.addLayer(state.heatLayer);
-    } else {
-      state.map.removeLayer(state.heatLayer);
+  if (state.selectedOfficeId) {
+    const office = getOfficeById(state.selectedOfficeId);
+    if (!office) {
+      state.selectedOfficeId = null;
+      renderView(options);
+      return;
     }
+
+    const city = getCityById(office.cityId);
+    const metrics = buildOfficeMetrics(state.data, office.id);
+    state.mapService.renderOffices(visibleOffices, {
+      getCityById,
+      onOfficeClick: handleOfficeClick,
+    });
+    state.mapService.openOfficePopup(office.id);
+    state.detailsPanel.renderOffice({
+      office,
+      city,
+      metrics,
+      onBack: state.selectedCityId
+        ? () => {
+            state.selectedOfficeId = null;
+            renderView();
+          }
+        : () => {
+            state.selectedOfficeId = null;
+            renderView();
+          },
+      backLabel: state.selectedCityId ? 'Back to city' : 'Back to offices',
+    });
+    restoreSearchFocus(options);
+    return;
+  }
+
+  if (state.selectedCityId) {
+    const city = getCityById(state.selectedCityId);
+    if (!city) {
+      clearSelection();
+      renderView(options);
+      return;
+    }
+
+    const metrics = buildCityMetrics(state.data, city.id);
+    state.mapService.renderOffices(metrics.offices, {
+      getCityById,
+      onOfficeClick: handleOfficeClick,
+    });
+    state.detailsPanel.renderCity({
+      city,
+      metrics,
+      cities: state.data.cities,
+      countries,
+      filters: state.filters,
+      visibleCities,
+      visibleKpis: visibleKpisForDisplay,
+      onCitySelect: handleCityClick,
+      onOfficeClick: handleOfficeClick,
+      onCityQueryChange: updateCityQuery,
+      onCountryChange: updateCountryFilter,
+    });
+    restoreSearchFocus(options);
+    return;
+  }
+
+  state.mapService.renderOffices(visibleOffices, {
+    getCityById,
+    onOfficeClick: handleOfficeClick,
   });
 
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    document.getElementById('searchInput').value = '';
-    document.getElementById('countrySelect').value = 'All countries';
-    document.getElementById('minPop').value = '';
-    document.getElementById('maxPop').value = '';
-    document.getElementById('heatmapToggle').checked = true;
-    state.selectedCityId = null;
-    renderDetails(null);
-    applyFilters();
+  const officeItems = visibleOffices.map((office) => ({
+    office,
+    city: getCityById(office.cityId),
+    metrics: buildOfficeMetrics(state.data, office.id),
+  }));
+
+  state.detailsPanel.renderOfficeDirectory({
+    overview: buildFilteredOverview(state.data, visibleCities),
+    cities: state.data.cities,
+    countries,
+    filters: state.filters,
+    visibleCities,
+    offices: officeItems,
+    selectedCityId: state.selectedCityId,
+    selectedOfficeId: state.selectedOfficeId,
+    onCitySelect: handleCityClick,
+    onCityQueryChange: updateCityQuery,
+    onCountryChange: updateCountryFilter,
+    onOfficeClick: handleOfficeClick,
   });
 }
 
-async function initMap() {
-  state.allCities = await fetchCities();
-  renderCountrySelect(state.allCities);
-  bindControls();
+function restoreSearchFocus(options = {}) {
+  if (!options.preserveCitySearch) {
+    return;
+  }
 
-  state.map = L.map('map', { zoomControl: true }).setView([20, 0], 2);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors',
-  }).addTo(state.map);
+  const input = document.getElementById('citySearch');
+  if (!input) {
+    return;
+  }
 
-  state.markerLayer = L.layerGroup().addTo(state.map);
-  state.heatLayer = L.heatLayer([], { radius: 28, blur: 18, maxZoom: 10 });
-  state.heatLayer.addTo(state.map);
-
-  state.filteredCities = [...state.allCities];
-  renderSummary(state.filteredCities);
-  renderCityList(state.filteredCities);
-  renderDetails(null);
-  applyFilters();
+  const { selectionStart, selectionEnd, value } = options.preserveCitySearch;
+  requestAnimationFrame(() => {
+    const nextInput = document.getElementById('citySearch');
+    if (!nextInput) return;
+    nextInput.focus({ preventScroll: true });
+    const cursor = Math.min(selectionEnd ?? value.length, nextInput.value.length);
+    const start = Math.min(selectionStart ?? cursor, nextInput.value.length);
+    nextInput.setSelectionRange(start, cursor);
+  });
 }
 
-initMap().catch((error) => {
+function handleCityClick(city) {
+  state.selectedOfficeId = null;
+  state.selectedCityId = city.id;
+
+  if (state.layer === 'office') {
+    renderView();
+    return;
+  }
+
+  state.layer = 'city';
+  state.layerControls?.setActive('city');
+  renderView();
+}
+
+function handleOfficeClick(office) {
+  state.selectedOfficeId = office.id;
+  if (!state.selectedCityId) {
+    state.selectedCityId = office.cityId;
+  }
+
+  if (state.layer === 'office') {
+    state.selectedCityId = office.cityId;
+    renderView();
+    return;
+  }
+
+  renderView();
+}
+
+function switchLayer(layer) {
+  state.layer = layer;
+  clearSelection();
+
+  if (state.layerControls) {
+    state.layerControls.setActive(layer);
+  }
+
+  renderView();
+}
+
+function resetDashboard() {
+  state.layer = 'city';
+  clearSelection();
+  resetFilters();
+  state.layerControls?.setActive('city');
+  renderView();
+}
+
+function updateCityQuery(value) {
+  const active = document.activeElement;
+  const preserveCitySearch = active?.id === 'citySearch'
+    ? {
+        value: active.value,
+        selectionStart: active.selectionStart,
+        selectionEnd: active.selectionEnd,
+      }
+    : null;
+
+  state.filters.cityQuery = value;
+
+  if (!String(value || '').trim()) {
+    if (state.layer === 'city' || state.layer === 'office') {
+      clearSelection();
+    }
+  }
+
+  const visibleCities = getVisibleCities();
+  const visibleOffices = getVisibleOffices();
+
+  if (state.selectedCityId) {
+    const selectedStillVisible = visibleCities.some((city) => city.id === state.selectedCityId);
+    if (!selectedStillVisible) {
+      state.selectedCityId = null;
+    }
+  }
+
+  if (state.selectedOfficeId) {
+    const selectedOfficeStillVisible = visibleOffices.some((office) => office.id === state.selectedOfficeId);
+    if (!selectedOfficeStillVisible) {
+      state.selectedOfficeId = null;
+    }
+  }
+
+  renderView({ preserveCitySearch });
+}
+
+function updateCountryFilter(value) {
+  state.filters.country = value || 'all';
+
+  if (state.layer === 'city') {
+    clearSelection();
+  } else {
+    // In office layer, changing country should reset any drill-down so the map
+    // and sidebar can show all offices for the chosen country.
+    clearSelection();
+  }
+
+  renderView();
+}
+
+async function init() {
+  state.data = await loadAllData();
+
+  const settings = state.data.settings || {};
+  state.layer = settings.defaultLayer || 'city';
+
+  state.mapService = createMapService('map', settings);
+  state.detailsPanel = createDetailsPanel(document.getElementById('detailsPanel'));
+  state.layerControls = createLayerControls(document.getElementById('layerControls'), {
+    defaultLayer: settings.defaultLayer || 'city',
+    onLayerChange: switchLayer,
+    onReset: resetDashboard,
+  });
+
+  renderView();
+}
+
+init().catch((error) => {
   console.error(error);
-  document.getElementById('map').innerHTML = `
-    <div class="error">
-      <h2>Could not load map data</h2>
-      <p>${error.message}</p>
+  document.getElementById('detailsPanel').innerHTML = `
+    <div class="panel-head">
+      <p class="eyebrow">Error</p>
+      <h2>Could not load the dashboard</h2>
+      <p class="muted">${error.message}</p>
     </div>
   `;
+  document.getElementById('map').innerHTML = '<div class="error-state">Failed to load map data.</div>';
 });

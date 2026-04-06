@@ -1,0 +1,326 @@
+[
+  {
+    "id": "s1",
+    "cityId": "c1",
+    "officeId": "c1-o1",
+    "period": "2026-Q1",
+    "amount": 135000,
+    "currency": "USD",
+    "dealCount": 8
+  },
+  {
+    "id": "s2",
+    "cityId": "c1",
+    "officeId": "c1-o2",
+    "period": "2026-Q2",
+    "amount": 159000,
+    "currency": "USD",
+    "dealCount": 9
+  },
+  {
+    "id": "s3",
+    "cityId": "c1",
+    "officeId": "c1-o3",
+    "period": "2026-Q3",
+    "amount": 183000,
+    "currency": "USD",
+    "dealCount": 10
+  },
+  {
+    "id": "s4",
+    "cityId": "c2",
+    "officeId": "c2-o1",
+    "period": "2026-Q1",
+    "amount": 150000,
+    "currency": "USD",
+    "dealCount": 9
+  },
+  {
+    "id": "s5",
+    "cityId": "c2",
+    "officeId": "c2-o2",
+    "period": "2026-Q2",
+    "amount": 174000,
+    "currency": "USD",
+    "dealCount": 10
+  },
+  {
+    "id": "s6",
+    "cityId": "c2",
+    "officeId": "c2-o3",
+    "period": "2026-Q3",
+    "amount": 198000,
+    "currency": "USD",
+    "dealCount": 11
+  },
+  {
+    "id": "s7",
+    "cityId": "c3",
+    "officeId": "c3-o1",
+    "period": "2026-Q1",
+    "amount": 165000,
+    "currency": "USD",
+    "dealCount": 10
+  },
+  {
+    "id": "s8",
+    "cityId": "c3",
+    "officeId": "c3-o2",
+    "period": "2026-Q2",
+    "amount": 189000,
+    "currency": "USD",
+    "dealCount": 11
+  },
+  {
+    "id": "s9",
+    "cityId": "c3",
+    "officeId": "c3-o3",
+    "period": "2026-Q3",
+    "amount": 213000,
+    "currency": "USD",
+    "dealCount": 12
+  },
+  {
+    "id": "s10",
+    "cityId": "c4",
+    "officeId": "c4-o1",
+    "period": "2026-Q1",
+    "amount": 180000,
+    "currency": "USD",
+    "dealCount": 11
+  },
+  {
+    "id": "s11",
+    "cityId": "c4",
+    "officeId": "c4-o2",
+    "period": "2026-Q2",
+    "amount": 204000,
+    "currency": "USD",
+    "dealCount": 12
+  },
+  {
+    "id": "s12",
+    "cityId": "c4",
+    "officeId": "c4-o3",
+    "period": "2026-Q3",
+    "amount": 228000,
+    "currency": "USD",
+    "dealCount": 13
+  },
+  {
+    "id": "s13",
+    "cityId": "c5",
+    "officeId": "c5-o1",
+    "period": "2026-Q1",
+    "amount": 195000,
+    "currency": "USD",
+    "dealCount": 12
+  },
+  {
+    "id": "s14",
+    "cityId": "c5",
+    "officeId": "c5-o2",
+    "period": "2026-Q2",
+    "amount": 219000,
+    "currency": "USD",
+    "dealCount": 13
+  },
+  {
+    "id": "s15",
+    "cityId": "c5",
+    "officeId": "c5-o3",
+    "period": "2026-Q3",
+    "amount": 243000,
+    "currency": "USD",
+    "dealCount": 14
+  },
+  {
+    "id": "s16",
+    "cityId": "c6",
+    "officeId": "c6-o1",
+    "period": "2026-Q1",
+    "amount": 210000,
+    "currency": "USD",
+    "dealCount": 13
+  },
+  {
+    "id": "s17",
+    "cityId": "c6",
+    "officeId": "c6-o2",
+    "period": "2026-Q2",
+    "amount": 234000,
+    "currency": "USD",
+    "dealCount": 14
+  },
+  {
+    "id": "s18",
+    "cityId": "c6",
+    "officeId": "c6-o3",
+    "period": "2026-Q3",
+    "amount": 258000,
+    "currency": "USD",
+    "dealCount": 15
+  },
+  {
+    "id": "s19",
+    "cityId": "c7",
+    "officeId": "c7-o1",
+    "period": "2026-Q1",
+    "amount": 225000,
+    "currency": "USD",
+    "dealCount": 14
+  },
+  {
+    "id": "s20",
+    "cityId": "c7",
+    "officeId": "c7-o2",
+    "period": "2026-Q2",
+    "amount": 249000,
+    "currency": "USD",
+    "dealCount": 15
+  },
+  {
+    "id": "s21",
+    "cityId": "c7",
+    "officeId": "c7-o3",
+    "period": "2026-Q3",
+    "amount": 273000,
+    "currency": "USD",
+    "dealCount": 16
+  },
+  {
+    "id": "s22",
+    "cityId": "c8",
+    "officeId": "c8-o1",
+    "period": "2026-Q1",
+    "amount": 240000,
+    "currency": "USD",
+    "dealCount": 15
+  },
+  {
+    "id": "s23",
+    "cityId": "c8",
+    "officeId": "c8-o2",
+    "period": "2026-Q2",
+    "amount": 264000,
+    "currency": "USD",
+    "dealCount": 16
+  },
+  {
+    "id": "s24",
+    "cityId": "c8",
+    "officeId": "c8-o3",
+    "period": "2026-Q3",
+    "amount": 288000,
+    "currency": "USD",
+    "dealCount": 17
+  },
+  {
+    "id": "s25",
+    "cityId": "c9",
+    "officeId": "c9-o1",
+    "period": "2026-Q1",
+    "amount": 255000,
+    "currency": "USD",
+    "dealCount": 16
+  },
+  {
+    "id": "s26",
+    "cityId": "c9",
+    "officeId": "c9-o2",
+    "period": "2026-Q2",
+    "amount": 279000,
+    "currency": "USD",
+    "dealCount": 17
+  },
+  {
+    "id": "s27",
+    "cityId": "c9",
+    "officeId": "c9-o3",
+    "period": "2026-Q3",
+    "amount": 303000,
+    "currency": "USD",
+    "dealCount": 18
+  },
+  {
+    "id": "s28",
+    "cityId": "c10",
+    "officeId": "c10-o1",
+    "period": "2026-Q1",
+    "amount": 270000,
+    "currency": "USD",
+    "dealCount": 17
+  },
+  {
+    "id": "s29",
+    "cityId": "c10",
+    "officeId": "c10-o2",
+    "period": "2026-Q2",
+    "amount": 294000,
+    "currency": "USD",
+    "dealCount": 18
+  },
+  {
+    "id": "s30",
+    "cityId": "c10",
+    "officeId": "c10-o3",
+    "period": "2026-Q3",
+    "amount": 318000,
+    "currency": "USD",
+    "dealCount": 19
+  },
+  {
+    "id": "s31",
+    "cityId": "c11",
+    "officeId": "c11-o1",
+    "period": "2026-Q1",
+    "amount": 135000,
+    "currency": "AUD",
+    "dealCount": 9
+  },
+  {
+    "id": "s32",
+    "cityId": "c11",
+    "officeId": "c11-o2",
+    "period": "2026-Q2",
+    "amount": 159000,
+    "currency": "AUD",
+    "dealCount": 11
+  },
+  {
+    "id": "s33",
+    "cityId": "c11",
+    "officeId": "c11-o3",
+    "period": "2026-Q3",
+    "amount": 183000,
+    "currency": "AUD",
+    "dealCount": 13
+  },
+  {
+    "id": "s34",
+    "cityId": "c12",
+    "officeId": "c12-o1",
+    "period": "2026-Q1",
+    "amount": 124000,
+    "currency": "AUD",
+    "dealCount": 9
+  },
+  {
+    "id": "s35",
+    "cityId": "c12",
+    "officeId": "c12-o2",
+    "period": "2026-Q2",
+    "amount": 148000,
+    "currency": "AUD",
+    "dealCount": 11
+  },
+  {
+    "id": "s36",
+    "cityId": "c12",
+    "officeId": "c12-o3",
+    "period": "2026-Q3",
+    "amount": 172000,
+    "currency": "AUD",
+    "dealCount": 13
+  }
+]

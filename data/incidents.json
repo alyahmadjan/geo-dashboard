@@ -1,0 +1,482 @@
+[
+  {
+    "id": "i1",
+    "cityId": "c1",
+    "officeId": "c2-o1",
+    "category": "Security",
+    "severity": "medium",
+    "status": "open",
+    "date": "2026-03-11",
+    "title": "New York operational incident 1"
+  },
+  {
+    "id": "i2",
+    "cityId": "c1",
+    "officeId": "c1-o2",
+    "category": "Infrastructure",
+    "severity": "high",
+    "status": "resolved",
+    "date": "2026-03-12",
+    "title": "New York operational incident 2"
+  },
+  {
+    "id": "i3",
+    "cityId": "c1",
+    "officeId": "c1-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-21",
+    "title": "Manhattan HQ service follow-up"
+  },
+  {
+    "id": "i4",
+    "cityId": "c1",
+    "officeId": "c1-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-21",
+    "title": "Brooklyn Office service follow-up"
+  },
+  {
+    "id": "i5",
+    "cityId": "c2",
+    "officeId": null,
+    "category": "Infrastructure",
+    "severity": "high",
+    "status": "open",
+    "date": "2026-03-12",
+    "title": "London operational incident 1"
+  },
+  {
+    "id": "i6",
+    "cityId": "c2",
+    "officeId": "c2-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-13",
+    "title": "London operational incident 2"
+  },
+  {
+    "id": "i7",
+    "cityId": "c2",
+    "officeId": "c2-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-22",
+    "title": "Canary Wharf Office service follow-up"
+  },
+  {
+    "id": "i8",
+    "cityId": "c2",
+    "officeId": "c2-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-22",
+    "title": "West End Hub service follow-up"
+  },
+  {
+    "id": "i9",
+    "cityId": "c3",
+    "officeId": null,
+    "category": "Support",
+    "severity": "low",
+    "status": "open",
+    "date": "2026-03-13",
+    "title": "Dubai operational incident 1"
+  },
+  {
+    "id": "i10",
+    "cityId": "c3",
+    "officeId": "c3-o2",
+    "category": "Operations",
+    "severity": "medium",
+    "status": "resolved",
+    "date": "2026-03-14",
+    "title": "Dubai operational incident 2"
+  },
+  {
+    "id": "i11",
+    "cityId": "c3",
+    "officeId": "c3-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-23",
+    "title": "Downtown Dubai Office service follow-up"
+  },
+  {
+    "id": "i12",
+    "cityId": "c3",
+    "officeId": "c3-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-23",
+    "title": "Marina Branch service follow-up"
+  },
+  {
+    "id": "i13",
+    "cityId": "c4",
+    "officeId": null,
+    "category": "Operations",
+    "severity": "medium",
+    "status": "open",
+    "date": "2026-03-14",
+    "title": "Singapore operational incident 1"
+  },
+  {
+    "id": "i14",
+    "cityId": "c4",
+    "officeId": "c4-o2",
+    "category": "Security",
+    "severity": "high",
+    "status": "resolved",
+    "date": "2026-03-15",
+    "title": "Singapore operational incident 2"
+  },
+  {
+    "id": "i15",
+    "cityId": "c4",
+    "officeId": "c4-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-24",
+    "title": "Raffles Place Hub service follow-up"
+  },
+  {
+    "id": "i16",
+    "cityId": "c4",
+    "officeId": "c4-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-24",
+    "title": "Marina Bay Office service follow-up"
+  },
+  {
+    "id": "i17",
+    "cityId": "c5",
+    "officeId": null,
+    "category": "Security",
+    "severity": "high",
+    "status": "open",
+    "date": "2026-03-15",
+    "title": "Toronto operational incident 1"
+  },
+  {
+    "id": "i18",
+    "cityId": "c5",
+    "officeId": "c5-o2",
+    "category": "Infrastructure",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-16",
+    "title": "Toronto operational incident 2"
+  },
+  {
+    "id": "i19",
+    "cityId": "c5",
+    "officeId": "c5-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-25",
+    "title": "Financial District Office service follow-up"
+  },
+  {
+    "id": "i20",
+    "cityId": "c5",
+    "officeId": "c5-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-25",
+    "title": "North York Branch service follow-up"
+  },
+  {
+    "id": "i21",
+    "cityId": "c6",
+    "officeId": null,
+    "category": "Infrastructure",
+    "severity": "low",
+    "status": "open",
+    "date": "2026-03-16",
+    "title": "Sydney operational incident 1"
+  },
+  {
+    "id": "i22",
+    "cityId": "c6",
+    "officeId": "c6-o2",
+    "category": "Support",
+    "severity": "medium",
+    "status": "resolved",
+    "date": "2026-03-17",
+    "title": "Sydney operational incident 2"
+  },
+  {
+    "id": "i23",
+    "cityId": "c6",
+    "officeId": "c6-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-26",
+    "title": "CBD Office service follow-up"
+  },
+  {
+    "id": "i24",
+    "cityId": "c6",
+    "officeId": "c6-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-26",
+    "title": "North Shore Branch service follow-up"
+  },
+  {
+    "id": "i25",
+    "cityId": "c7",
+    "officeId": null,
+    "category": "Support",
+    "severity": "medium",
+    "status": "open",
+    "date": "2026-03-17",
+    "title": "Tokyo operational incident 1"
+  },
+  {
+    "id": "i26",
+    "cityId": "c7",
+    "officeId": "c7-o2",
+    "category": "Operations",
+    "severity": "high",
+    "status": "resolved",
+    "date": "2026-03-18",
+    "title": "Tokyo operational incident 2"
+  },
+  {
+    "id": "i27",
+    "cityId": "c7",
+    "officeId": "c7-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-27",
+    "title": "Shinjuku HQ service follow-up"
+  },
+  {
+    "id": "i28",
+    "cityId": "c7",
+    "officeId": "c7-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-27",
+    "title": "Shibuya Office service follow-up"
+  },
+  {
+    "id": "i29",
+    "cityId": "c8",
+    "officeId": null,
+    "category": "Operations",
+    "severity": "high",
+    "status": "open",
+    "date": "2026-03-18",
+    "title": "Paris operational incident 1"
+  },
+  {
+    "id": "i30",
+    "cityId": "c8",
+    "officeId": "c8-o2",
+    "category": "Security",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-19",
+    "title": "Paris operational incident 2"
+  },
+  {
+    "id": "i31",
+    "cityId": "c8",
+    "officeId": "c8-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-28",
+    "title": "La Défense HQ service follow-up"
+  },
+  {
+    "id": "i32",
+    "cityId": "c8",
+    "officeId": "c8-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-28",
+    "title": "Left Bank Office service follow-up"
+  },
+  {
+    "id": "i33",
+    "cityId": "c9",
+    "officeId": null,
+    "category": "Security",
+    "severity": "low",
+    "status": "open",
+    "date": "2026-03-19",
+    "title": "Berlin operational incident 1"
+  },
+  {
+    "id": "i34",
+    "cityId": "c9",
+    "officeId": "c9-o2",
+    "category": "Infrastructure",
+    "severity": "medium",
+    "status": "resolved",
+    "date": "2026-03-20",
+    "title": "Berlin operational incident 2"
+  },
+  {
+    "id": "i35",
+    "cityId": "c9",
+    "officeId": "c9-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-29",
+    "title": "Mitte HQ service follow-up"
+  },
+  {
+    "id": "i36",
+    "cityId": "c9",
+    "officeId": "c9-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-29",
+    "title": "Charlottenburg Office service follow-up"
+  },
+  {
+    "id": "i37",
+    "cityId": "c10",
+    "officeId": null,
+    "category": "Infrastructure",
+    "severity": "medium",
+    "status": "open",
+    "date": "2026-03-20",
+    "title": "São Paulo operational incident 1"
+  },
+  {
+    "id": "i38",
+    "cityId": "c10",
+    "officeId": "c10-o2",
+    "category": "Support",
+    "severity": "high",
+    "status": "resolved",
+    "date": "2026-03-21",
+    "title": "São Paulo operational incident 2"
+  },
+  {
+    "id": "i39",
+    "cityId": "c10",
+    "officeId": "c10-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-30",
+    "title": "Paulista HQ service follow-up"
+  },
+  {
+    "id": "i40",
+    "cityId": "c10",
+    "officeId": "c10-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-03-30",
+    "title": "Itaim Office service follow-up"
+  },
+  {
+    "id": "i41",
+    "cityId": "c11",
+    "officeId": null,
+    "category": "Security",
+    "severity": "medium",
+    "status": "open",
+    "date": "2026-03-24",
+    "title": "Melbourne operational incident 1"
+  },
+  {
+    "id": "i42",
+    "cityId": "c11",
+    "officeId": "c11-o2",
+    "category": "Infrastructure",
+    "severity": "high",
+    "status": "resolved",
+    "date": "2026-03-25",
+    "title": "Melbourne operational incident 2"
+  },
+  {
+    "id": "i43",
+    "cityId": "c11",
+    "officeId": "c11-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-04-01",
+    "title": "Melbourne HQ service follow-up"
+  },
+  {
+    "id": "i44",
+    "cityId": "c11",
+    "officeId": "c11-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-04-01",
+    "title": "Southbank Office service follow-up"
+  },
+  {
+    "id": "i45",
+    "cityId": "c12",
+    "officeId": null,
+    "category": "Security",
+    "severity": "medium",
+    "status": "open",
+    "date": "2026-03-26",
+    "title": "Perth operational incident 1"
+  },
+  {
+    "id": "i46",
+    "cityId": "c12",
+    "officeId": "c12-o2",
+    "category": "Infrastructure",
+    "severity": "high",
+    "status": "resolved",
+    "date": "2026-03-27",
+    "title": "Perth operational incident 2"
+  },
+  {
+    "id": "i47",
+    "cityId": "c12",
+    "officeId": "c12-o1",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-04-02",
+    "title": "Perth HQ service follow-up"
+  },
+  {
+    "id": "i48",
+    "cityId": "c12",
+    "officeId": "c12-o2",
+    "category": "Support",
+    "severity": "low",
+    "status": "resolved",
+    "date": "2026-04-02",
+    "title": "Northbridge Office service follow-up"
+  }
+]

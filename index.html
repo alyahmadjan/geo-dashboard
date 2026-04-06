@@ -3,70 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Geo Dashboard MVP (Phase 1)</title>
+  <title>Geospatial Dashboard</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
   <link rel="stylesheet" href="./styles/style.css" />
 </head>
 <body>
   <header class="topbar">
-    <div>
-      <h1>Location Intelligence Dashboard</h1>
-      <p>Geospatial insights for multi-location enterprises</p>
+    <div class="brand">
+      <h1>Geospatial Dashboard</h1>
+      <p class="subtitle">City and office drill-down with a data layer ready for API integration.</p>
     </div>
 
-    <div class="top-actions">
-      <label class="toggle">
-        <input id="heatmapToggle" type="checkbox" checked />
-        <span>Heatmap</span>
-      </label>
-      <button id="resetBtn" class="btn">Reset filters</button>
+    <div class="actions">
+      <div id="layerControls" class="segmented" aria-label="Layer controls">
+        <button type="button" class="segmented-btn active" data-layer="city">City layer</button>
+        <button type="button" class="segmented-btn" data-layer="office">Office layer</button>
+      </div>
+      <button id="resetBtn" type="button" class="btn btn-secondary">Reset</button>
     </div>
   </header>
 
   <main class="layout">
-    <aside class="panel">
-      <h2>Filters</h2>
-
-      <div class="field">
-        <label for="searchInput">Search city</label>
-        <input id="searchInput" type="search" placeholder="Type a city name" />
-      </div>
-
-      <div class="field">
-        <label for="countrySelect">Country</label>
-        <select id="countrySelect"></select>
-      </div>
-
-      <div class="grid-2">
-        <div class="field">
-          <label for="minPop">Min population</label>
-          <input id="minPop" type="number" min="0" step="100000" placeholder="0" />
-        </div>
-        <div class="field">
-          <label for="maxPop">Max population</label>
-          <input id="maxPop" type="number" min="0" step="100000" placeholder="No limit" />
-        </div>
-      </div>
-
-      <div class="stats" id="summaryStats"></div>
-
-      <h2>Visible cities</h2>
-      <ul id="cityList" class="city-list"></ul>
+    <aside class="sidebar">
+      <div id="detailsPanel" class="details-panel"></div>
     </aside>
 
-    <section class="map-wrap">
+    <section class="map-shell">
       <div id="map"></div>
-      <div id="detailsPanel" class="details-panel">
-        <div class="details-empty">
-          <h3>Select a city</h3>
-          <p>Click a marker or a city in the list to view drill-down analytics.</p>
-        </div>
-      </div>
     </section>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
   <script type="module" src="./app.js"></script>
 </body>
 </html>

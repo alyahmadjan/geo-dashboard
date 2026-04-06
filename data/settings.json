@@ -1,0 +1,28 @@
+{
+  "defaultLayer": "city",
+  "map": {
+    "center": [
+      20,
+      0
+    ],
+    "zoom": 2,
+    "minZoom": 2,
+    "maxZoom": 18
+  },
+  "markerStyles": {
+    "city": {
+      "radius": 10,
+      "color": "#2563eb",
+      "fillColor": "#2563eb",
+      "fillOpacity": 0.9,
+      "weight": 2
+    },
+    "office": {
+      "radius": 8,
+      "color": "#f59e0b",
+      "fillColor": "#f59e0b",
+      "fillOpacity": 0.9,
+      "weight": 2
+    }
+  }
+}

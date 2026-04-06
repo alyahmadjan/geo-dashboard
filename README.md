@@ -1,80 +1,31 @@
-# Geo Dashboard MVP+
+# Geospatial Dashboard
 
-Leaflet + OpenStreetMap demo with:
-- filters
-- heatmap toggle
-- drill-down analytics panel
-- API-ready data service
+A lightweight, API-ready Leaflet dashboard built with static JSON for now.
 
-## Structure
+## What is included
 
-```text
-geo-dashboard/
-├── index.html
-├── app.js
-├── data/
-│   └── cities.json
-├── services/
-│   └── dataService.js
-├── styles/
-│   └── style.css
-└── README.md
-```
+- Leaflet + OpenStreetMap map
+- 10 cities with population data
+- City and office drill-down
+- Searchable city filter and country filter
+- Independent scrolling for city list and KPI list
+- Sidebar details panel
+- Reset button
+- City layer / Office layer switching
+- Data loading separated from rendering logic
 
-## Run locally
+## How it works
 
-From inside the `geo-dashboard` folder:
+Default view shows all cities on the map. Click a city marker or a city name in the sidebar to drill into that city and show its offices on the map. Click an office to see its details in the panel. Use Reset to return to the default city view.
 
-```bash
-python -m http.server 8000
-```
+## Switching to an API later
 
-Then open:
+The UI reads everything through `loadAllData()` in `services/dataService.js`. To replace the static JSON files later, keep the same response shape and point `window.GEO_DASHBOARD_API_BASE_URL` to your backend.
 
-```text
-http://localhost:8000
-```
-
-## Live data integration
-
-By default, the app loads `data/cities.json`.
-
-To point it at your own API later, set this before `app.js` runs:
+Example:
 
 ```html
 <script>
-  window.GEO_DASHBOARD_API_URL = 'https://your-domain.com/api/cities';
+  window.GEO_DASHBOARD_API_BASE_URL = 'https://your-domain.com/api';
 </script>
 ```
-
-Then make sure the API returns either:
-- an array of city objects, or
-- `{ "cities": [...] }`
-
-## What changed for Phase 2 features
-
-### 1) Interactive filters
-Changed files:
-- `index.html` → added search, country, and population controls
-- `app.js` → added filter state and re-render logic
-- `styles/style.css` → added control and panel styling
-
-### 2) Heatmap
-Changed files:
-- `index.html` → added Leaflet.heat script
-- `app.js` → added a heat layer and toggle handling
-
-### 3) Drill-down analytics
-Changed files:
-- `app.js` → added the right-side details panel and city analytics view
-- `index.html` → added the details panel container
-
-### 4) Live data integration
-Changed files:
-- `services/dataService.js` → data now loads from a configurable URL
-- `README.md` → explains how to switch to your own backend
-
-## Notes
-
-- The app still uses Leaflet + OpenStreetMap for the base map.
-- If you open `index.html` directly from disk, `fetch()` may be blocked. Use a local server.

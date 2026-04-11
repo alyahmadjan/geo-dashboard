@@ -229,11 +229,12 @@ function getSalesFilterState(data, filters = {}) {
   const cityQuery = String(filters.salesCityQuery || '').trim().toLowerCase();
   const salesCityId = String(filters.salesCityId || 'all');
   const salesOfficeId = String(filters.salesOfficeId || 'all');
-  const salesRegion = String(filters.salesRegion || 'all');
+  const salesBeeHubId = String(filters.salesBeeHubId || 'all');
 
   const records = (data.sales || []).map((sale) => normalizeSalesScopeRecord(sale, data));
   const selectedCity = salesCityId !== 'all' ? getCityById(data, salesCityId) : null;
   const selectedOffice = salesOfficeId !== 'all' ? getOfficeById(data, salesOfficeId) : null;
+  const selectedBeeHub = salesBeeHubId !== 'all' ? (data.beeHubs || []).find((bh) => bh.id === salesBeeHubId) : null;
 
   const matchesCountry = (sale) => {
     const purchaserCity = sale.resolvedPurchaserCity || getCityById(data, sale.resolvedPurchaserCityId || sale.purchaserCityId);
@@ -256,14 +257,18 @@ function getSalesFilterState(data, filters = {}) {
     return (sale.resolvedOfficeId || sale.officeId) === selectedOffice?.id;
   };
 
-  const matchesRegion = (sale) => salesRegion === 'all' || sale.resolvedRegion === salesRegion || sale.purchaserRegion === salesRegion;
+  const matchesBeeHub = (sale) => {
+    if (salesBeeHubId === 'all') return true;
+    const officeId = sale.resolvedOfficeId || sale.officeId;
+    return selectedBeeHub?.officeId === officeId;
+  };
 
-  const filteredRecords = records.filter((sale) => matchesCountry(sale) && matchesQuery(sale) && matchesCity(sale) && matchesOffice(sale) && matchesRegion(sale));
+  const filteredRecords = records.filter((sale) => matchesCountry(sale) && matchesQuery(sale) && matchesCity(sale) && matchesOffice(sale) && matchesBeeHub(sale));
 
   const cityCandidates = [];
   const citySeen = new Set();
   for (const sale of records) {
-    if (!matchesCountry(sale) || !matchesQuery(sale) || !matchesRegion(sale)) continue;
+    if (!matchesCountry(sale) || !matchesQuery(sale) || !matchesBeeHub(sale)) continue;
     const cityId = sale.resolvedPurchaserCityId || sale.purchaserCityId;
     const city = sale.resolvedPurchaserCity || getCityById(data, cityId);
     if (!city || citySeen.has(city.id)) continue;
@@ -274,7 +279,7 @@ function getSalesFilterState(data, filters = {}) {
   const officeCandidates = [];
   const officeSeen = new Set();
   for (const sale of records) {
-    if (!matchesCountry(sale) || !matchesQuery(sale) || !matchesRegion(sale)) continue;
+    if (!matchesCountry(sale) || !matchesQuery(sale) || !matchesBeeHub(sale)) continue;
     if (salesCityId !== 'all' && !matchesCity(sale)) continue;
     const officeId = sale.resolvedOfficeId || sale.officeId;
     const office = sale.resolvedOffice || getOfficeById(data, officeId);
@@ -291,7 +296,7 @@ function getSalesFilterState(data, filters = {}) {
     cityQuery,
     salesCityId,
     salesOfficeId,
-    salesRegion,
+    salesBeeHubId,
     cityCandidates,
     cityIdSet,
     officeCandidates,
@@ -320,6 +325,41 @@ function aggregateSalesByRegionFromRecords(records) {
   }
 
   return [...groups.values()].sort((a, b) => b.deals - a.deals || a.region.localeCompare(b.region));
+}
+
+function aggregateSalesByBeeHubFromRecords(records, data) {
+  const groups = new Map();
+
+  for (const sale of records) {
+    const officeId = sale.resolvedOfficeId || sale.officeId;
+    if (!officeId) continue;
+
+    // Find all beeHubs for this office
+    const beeHubsForOffice = (data.beeHubs || []).filter((bh) => bh.officeId === officeId);
+    
+    for (const beeHub of beeHubsForOffice) {
+      if (!groups.has(beeHub.id)) {
+        const resolvedCity = beeHub.resolvedCity || getCityById(data, beeHub.cityId);
+        groups.set(beeHub.id, {
+          id: beeHub.id,
+          name: beeHub.name,
+          cityId: beeHub.cityId,
+          city: resolvedCity,
+          resolvedOfficeName: beeHub.resolvedOfficeName,
+          records: 0,
+          deals: 0,
+          salesTotal: 0,
+        });
+      }
+
+      const group = groups.get(beeHub.id);
+      group.records += 1;
+      group.deals += Number(sale.dealCount || 1);
+      group.salesTotal += Number(sale.amount || 0);
+    }
+  }
+
+  return [...groups.values()].sort((a, b) => b.salesTotal - a.salesTotal || (a.name || '').localeCompare(b.name || ''));
 }
 
 function aggregateSalesByCityFromRecords(records, data) {
@@ -459,6 +499,7 @@ export function buildSalesLayerContext(data, filters = {}) {
   const heatPoints = getSalesHeatPointsFromRecords(records);
   const selectedCity = state.salesCityId !== 'all' ? getCityById(data, state.salesCityId) : null;
   const selectedOffice = state.salesOfficeId !== 'all' ? getOfficeById(data, state.salesOfficeId) : null;
+  const selectedBeeHub = state.salesBeeHubId !== 'all' ? (data.beeHubs || []).find((bh) => bh.id === state.salesBeeHubId) : null;
 
   const countries = uniqueValues((data.cities || []).map((city) => city.country || 'Unassigned'));
 
@@ -466,19 +507,19 @@ export function buildSalesLayerContext(data, filters = {}) {
     const purchaserCity = sale.resolvedPurchaserCity || getCityById(data, sale.resolvedPurchaserCityId || sale.purchaserCityId);
     const matchesCountry = state.country === 'all' || sale.resolvedCountry === state.country || purchaserCity?.country === state.country;
     const matchesQuery = !state.cityQuery || (purchaserCity?.name || sale.purchaserCity || '').toLowerCase().includes(state.cityQuery);
-    const matchesRegion = state.salesRegion === 'all' || sale.resolvedRegion === state.salesRegion || sale.purchaserRegion === state.salesRegion;
-    return matchesCountry && matchesQuery && matchesRegion;
+    const matchesBeeHub = state.salesBeeHubId === 'all' || (sale.resolvedOfficeId || sale.officeId) === selectedBeeHub?.officeId;
+    return matchesCountry && matchesQuery && matchesBeeHub;
   });
 
   const officeListRecords = (data.sales || []).map((sale) => normalizeSalesScopeRecord(sale, data)).filter((sale) => {
     const purchaserCity = sale.resolvedPurchaserCity || getCityById(data, sale.resolvedPurchaserCityId || sale.purchaserCityId);
     const matchesCountry = state.country === 'all' || sale.resolvedCountry === state.country || purchaserCity?.country === state.country;
-    const matchesRegion = state.salesRegion === 'all' || sale.resolvedRegion === state.salesRegion || sale.purchaserRegion === state.salesRegion;
+    const matchesBeeHub = state.salesBeeHubId === 'all' || (sale.resolvedOfficeId || sale.officeId) === selectedBeeHub?.officeId;
     const matchesCity = state.salesCityId === 'all' || (sale.resolvedPurchaserCityId || sale.purchaserCityId) === selectedCity?.id;
-    return matchesCountry && matchesRegion && matchesCity;
+    return matchesCountry && matchesBeeHub && matchesCity;
   });
 
-  const regionListRecords = (data.sales || []).map((sale) => normalizeSalesScopeRecord(sale, data)).filter((sale) => {
+  const beeHubListRecords = (data.sales || []).map((sale) => normalizeSalesScopeRecord(sale, data)).filter((sale) => {
     const purchaserCity = sale.resolvedPurchaserCity || getCityById(data, sale.resolvedPurchaserCityId || sale.purchaserCityId);
     const matchesCountry = state.country === 'all' || sale.resolvedCountry === state.country || purchaserCity?.country === state.country;
     const matchesQuery = !state.cityQuery || (purchaserCity?.name || sale.purchaserCity || '').toLowerCase().includes(state.cityQuery);
@@ -489,7 +530,7 @@ export function buildSalesLayerContext(data, filters = {}) {
 
   const citySummary = aggregateSalesByCityFromRecords(cityListRecords, data);
   const officeSummary = aggregateSalesByOfficeFromRecords(officeListRecords, data);
-  const regionSummary = aggregateSalesByRegionFromRecords(regionListRecords);
+  const beeHubSummary = aggregateSalesByBeeHubFromRecords(beeHubListRecords, data);
 
   const selectedCityDetails = selectedCity ? buildSalesDetailsFromCity(data, selectedCity, records) : null;
   const selectedOfficeDetails = selectedOffice ? buildSalesDetailsFromOffice(data, selectedOffice, records) : null;
@@ -500,7 +541,7 @@ export function buildSalesLayerContext(data, filters = {}) {
     selectedCountry: state.country,
     selectedCityId: state.salesCityId,
     selectedOfficeId: state.salesOfficeId,
-    selectedRegion: state.salesRegion,
+    selectedBeeHub: state.salesBeeHubId,
     cities: state.cityCandidates,
     offices: state.officeCandidates,
     records,
@@ -509,14 +550,13 @@ export function buildSalesLayerContext(data, filters = {}) {
       records: records.length,
       cities: new Set(records.map((sale) => sale.resolvedPurchaserCityId || sale.purchaserCityId).filter(Boolean)).size,
       offices: new Set(records.map((sale) => sale.resolvedOfficeId || sale.officeId).filter(Boolean)).size,
-      regions: regionSummary.length,
       deals: records.reduce((total, sale) => total + Number(sale.dealCount || 1), 0),
       salesTotal: records.reduce((total, sale) => total + Number(sale.amount || 0), 0),
       heatPoints: heatPoints.length,
     },
-    regionSummary,
     citySummary,
     officeSummary,
+    beeHubSummary,
     selectedCity,
     selectedOffice,
     selectedCityDetails,
@@ -1026,11 +1066,12 @@ function getSubjectFilterState(data, filters = {}) {
   const cityQuery = String(filters.subjectCityQuery || '').trim().toLowerCase();
   const subjectCityId = String(filters.subjectCityId || 'all');
   const subjectOfficeId = String(filters.subjectOfficeId || 'all');
-  const subjectRegion = String(filters.subjectRegion || 'all');
+  const subjectBeeHubId = String(filters.subjectBeeHubId || 'all');
 
   const records = (data.subjects || []).map((subject) => subject);
   const selectedCity = subjectCityId !== 'all' ? getCityById(data, subjectCityId) : null;
   const selectedOffice = subjectOfficeId !== 'all' ? getOfficeById(data, subjectOfficeId) : null;
+  const selectedBeeHub = subjectBeeHubId !== 'all' ? (data.beeHubs || []).find((bh) => bh.id === subjectBeeHubId) : null;
 
   const matchesCountry = (subject) => {
     const city = getCityById(data, subject.cityId);
@@ -1053,14 +1094,17 @@ function getSubjectFilterState(data, filters = {}) {
     return subject.officeId === selectedOffice?.id;
   };
 
-  const matchesRegion = (subject) => subjectRegion === 'all' || subject.region === subjectRegion;
+  const matchesBeeHub = (subject) => {
+    if (subjectBeeHubId === 'all') return true;
+    return subject.officeId === selectedBeeHub?.officeId;
+  };
 
-  const filteredRecords = records.filter((subject) => matchesCountry(subject) && matchesQuery(subject) && matchesCity(subject) && matchesOffice(subject) && matchesRegion(subject));
+  const filteredRecords = records.filter((subject) => matchesCountry(subject) && matchesQuery(subject) && matchesCity(subject) && matchesOffice(subject) && matchesBeeHub(subject));
 
   const cityCandidates = [];
   const citySeen = new Set();
   for (const subject of records) {
-    if (!matchesCountry(subject) || !matchesQuery(subject) || !matchesRegion(subject)) continue;
+    if (!matchesCountry(subject) || !matchesQuery(subject) || !matchesBeeHub(subject)) continue;
     const city = getCityById(data, subject.cityId);
     if (!city || citySeen.has(city.id)) continue;
     citySeen.add(city.id);
@@ -1070,7 +1114,7 @@ function getSubjectFilterState(data, filters = {}) {
   const officeCandidates = [];
   const officeSeen = new Set();
   for (const subject of records) {
-    if (!matchesCountry(subject) || !matchesQuery(subject) || !matchesRegion(subject)) continue;
+    if (!matchesCountry(subject) || !matchesQuery(subject) || !matchesBeeHub(subject)) continue;
     if (subjectCityId !== 'all' && !matchesCity(subject)) continue;
     const office = subject.officeId ? getOfficeById(data, subject.officeId) : null;
     if (!office || officeSeen.has(office.id)) continue;
@@ -1086,7 +1130,7 @@ function getSubjectFilterState(data, filters = {}) {
     cityQuery,
     subjectCityId,
     subjectOfficeId,
-    subjectRegion,
+    subjectBeeHubId,
     cityCandidates,
     cityIdSet,
     officeCandidates,
@@ -1111,6 +1155,37 @@ function aggregateSubjectsByRegionFromRecords(records) {
   }
 
   return [...groups.values()].sort((a, b) => b.count - a.count || a.region.localeCompare(b.region));
+}
+
+function aggregateSubjectsByBeeHubFromRecords(records, data) {
+  const groups = new Map();
+
+  for (const subject of records) {
+    const officeId = subject.officeId;
+    if (!officeId) continue;
+
+    // Find all beeHubs for this office
+    const beeHubsForOffice = (data.beeHubs || []).filter((bh) => bh.officeId === officeId);
+    
+    for (const beeHub of beeHubsForOffice) {
+      if (!groups.has(beeHub.id)) {
+        const resolvedCity = beeHub.resolvedCity || getCityById(data, beeHub.cityId);
+        groups.set(beeHub.id, {
+          id: beeHub.id,
+          name: beeHub.name,
+          cityId: beeHub.cityId,
+          city: resolvedCity,
+          resolvedOfficeName: beeHub.resolvedOfficeName,
+          count: 0,
+        });
+      }
+
+      const group = groups.get(beeHub.id);
+      group.count += 1;
+    }
+  }
+
+  return [...groups.values()].sort((a, b) => b.count - a.count || (a.name || '').localeCompare(b.name || ''));
 }
 
 function aggregateSubjectsByCityFromRecords(records, data) {
@@ -1227,6 +1302,7 @@ export function buildSubjectLayerContext(data, filters = {}) {
   
   const selectedCity = state.selectedCity;
   const selectedOffice = state.selectedOffice;
+  const selectedBeeHub = state.subjectBeeHubId !== 'all' ? (data.beeHubs || []).find((bh) => bh.id === state.subjectBeeHubId) : null;
 
   const countries = uniqueValues((data.cities || []).map((city) => city.country || 'Unassigned'));
 
@@ -1234,19 +1310,19 @@ export function buildSubjectLayerContext(data, filters = {}) {
     const city = getCityById(data, subject.cityId);
     const matchesCountry = state.country === 'all' || city?.country === state.country;
     const matchesQuery = !state.cityQuery || (city?.name || '').toLowerCase().includes(state.cityQuery);
-    const matchesRegion = state.subjectRegion === 'all' || subject.region === state.subjectRegion;
-    return matchesCountry && matchesQuery && matchesRegion;
+    const matchesBeeHub = state.subjectBeeHubId === 'all' || subject.officeId === selectedBeeHub?.officeId;
+    return matchesCountry && matchesQuery && matchesBeeHub;
   });
 
   const officeListRecords = (data.subjects || []).filter((subject) => {
     const city = getCityById(data, subject.cityId);
     const matchesCountry = state.country === 'all' || city?.country === state.country;
-    const matchesRegion = state.subjectRegion === 'all' || subject.region === state.subjectRegion;
+    const matchesBeeHub = state.subjectBeeHubId === 'all' || subject.officeId === selectedBeeHub?.officeId;
     const matchesCity = state.subjectCityId === 'all' || subject.cityId === selectedCity?.id;
-    return matchesCountry && matchesRegion && matchesCity;
+    return matchesCountry && matchesBeeHub && matchesCity;
   });
 
-  const regionListRecords = (data.subjects || []).filter((subject) => {
+  const beeHubListRecords = (data.subjects || []).filter((subject) => {
     const city = getCityById(data, subject.cityId);
     const matchesCountry = state.country === 'all' || city?.country === state.country;
     const matchesQuery = !state.cityQuery || (city?.name || '').toLowerCase().includes(state.cityQuery);
@@ -1257,7 +1333,7 @@ export function buildSubjectLayerContext(data, filters = {}) {
 
   const citySummary = aggregateSubjectsByCityFromRecords(cityListRecords, data);
   const officeSummary = aggregateSubjectsByOfficeFromRecords(officeListRecords, data);
-  const regionSummary = aggregateSubjectsByRegionFromRecords(regionListRecords);
+  const beeHubSummary = aggregateSubjectsByBeeHubFromRecords(beeHubListRecords, data);
 
   const selectedCityDetails = selectedCity ? buildSubjectDetailsFromCity(data, selectedCity, records) : null;
   const selectedOfficeDetails = selectedOffice ? buildSubjectDetailsFromOffice(data, selectedOffice, records) : null;
@@ -1268,7 +1344,7 @@ export function buildSubjectLayerContext(data, filters = {}) {
     selectedCountry: state.country,
     selectedCityId: state.subjectCityId,
     selectedOfficeId: state.subjectOfficeId,
-    selectedRegion: state.subjectRegion,
+    selectedBeeHub: state.subjectBeeHubId,
     cities: state.cityCandidates,
     offices: state.officeCandidates,
     records,
@@ -1277,12 +1353,11 @@ export function buildSubjectLayerContext(data, filters = {}) {
       records: records.length,
       cities: new Set(records.map((subject) => subject.cityId).filter(Boolean)).size,
       offices: new Set(records.map((subject) => subject.officeId).filter(Boolean)).size,
-      regions: regionSummary.length,
       heatPoints: heatPoints.length,
     },
-    regionSummary,
     citySummary,
     officeSummary,
+    beeHubSummary,
     selectedCity,
     selectedOffice,
     selectedCityDetails,

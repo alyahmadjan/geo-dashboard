@@ -34,13 +34,14 @@ const defaultFilters = {
   salesCityQuery: '',
   salesCityId: 'all',
   salesOfficeId: 'all',
-  salesRegion: 'all',
+  salesBeeHubId: 'all',
   subjectPeriod: 'all',
   subjectCountry: 'all',
   subjectCityQuery: '',
   subjectCityId: 'all',
   subjectOfficeId: 'all',
-  subjectRegion: 'all',
+  subjectBeeHubId: 'all',
+  beeHubOfficeId: 'all',
 };
 
 const state = {
@@ -470,10 +471,12 @@ function renderView(options = {}) {
       selectedCityId: state.selectedCityId,
       selectedBeeHubId: state.selectedBeeHubId,
       overview,
+      offices: getVisibleOffices(),
       onCitySelect: handleCityClick,
       onCityQueryChange: updateCityQuery,
       onCountryChange: updateCountryFilter,
       onBeeHubClick: handleBeeHubClick,
+      onOfficeChange: updateBeeHubOffice,
     });
     restoreSearchFocus(options);
     return;
@@ -497,7 +500,7 @@ function renderView(options = {}) {
       onCitySelect: handleSalesCitySelect,
       onOfficeChange: updateSalesOffice,
       onOfficeSelect: handleSalesOfficeSelect,
-      onRegionChange: updateSalesRegion,
+      onBeeHubChange: updateSalesBeeHub,
       onBackToSales: state.salesDetailReturnTo === 'city' ? backToCityFromOfficeDetail : backToSalesFromOfficeDetail,
       backButtonLabel: state.salesDetailReturnTo === 'city' ? 'Back to City' : 'Back to Sales',
     });
@@ -522,7 +525,7 @@ function renderView(options = {}) {
       onCitySelect: handleSubjectCitySelect,
       onOfficeChange: updateSubjectOffice,
       onOfficeSelect: handleSubjectOfficeSelect,
-      onRegionChange: updateSubjectRegion,
+      onBeeHubChange: updateSubjectBeeHub,
       onBackToSubjects: state.subjectDetailReturnTo === 'city' ? backToCityFromSubjectOfficeDetail : backToSubjectsFromOfficeDetail,
       backButtonLabel: state.subjectDetailReturnTo === 'city' ? 'Back to City' : 'Back to Subjects',
     });
@@ -663,6 +666,11 @@ function updateBeeHubRegion(value) {
   renderView();
 }
 
+function updateBeeHubOffice(value) {
+  state.filters.beeHubOfficeId = value || 'all';
+  renderView();
+}
+
 function clearSalesSelection() {
   cancelSalesCityRenderTimer();
   state.salesDetailMode = null;
@@ -671,7 +679,7 @@ function clearSalesSelection() {
   state.filters.salesCountry = 'all';
   state.filters.salesCityId = 'all';
   state.filters.salesOfficeId = 'all';
-  state.filters.salesRegion = 'all';
+  state.filters.salesBeeHubId = 'all';
   state.filters.salesCityQuery = '';
   renderView();
 }
@@ -685,7 +693,7 @@ function backToCityFromOfficeDetail() {
   state.salesDetailMode = 'city';
   state.salesDetailReturnTo = 'sales';
   state.filters.salesOfficeId = 'all';
-  state.filters.salesRegion = 'all';
+  state.filters.salesBeeHubId = 'all';
   state.filters.salesCityQuery = '';
   renderView();
 }
@@ -698,7 +706,7 @@ function handleSalesCitySelect(city) {
   state.filters.salesCityId = city.id;
   state.filters.salesCityQuery = '';
   state.filters.salesOfficeId = 'all';
-  state.filters.salesRegion = 'all';
+  state.filters.salesBeeHubId = 'all';
   renderView();
 }
 
@@ -710,7 +718,7 @@ function handleSalesOfficeSelect(officeOrId, returnTo = 'sales') {
   state.salesDetailMode = 'office';
   state.salesDetailReturnTo = returnTo === 'city' ? 'city' : 'sales';
   state.filters.salesOfficeId = office.id;
-  state.filters.salesRegion = 'all';
+  state.filters.salesBeeHubId = 'all';
   state.filters.salesCityQuery = '';
   renderView();
 }
@@ -722,7 +730,7 @@ function updateSalesCountry(value) {
   state.filters.salesCountry = value || 'all';
   state.filters.salesCityId = 'all';
   state.filters.salesOfficeId = 'all';
-  state.filters.salesRegion = 'all';
+  state.filters.salesBeeHubId = 'all';
   state.filters.salesCityQuery = '';
   renderView();
 }
@@ -744,7 +752,7 @@ function updateSalesCityQuery(value) {
   state.filters.salesCityQuery = String(value || '');
   state.filters.salesCityId = 'all';
   state.filters.salesOfficeId = 'all';
-  state.filters.salesRegion = 'all';
+  state.filters.salesBeeHubId = 'all';
 
   state.salesCityRenderTimer = setTimeout(() => {
     state.salesCityRenderTimer = null;
@@ -757,19 +765,16 @@ function updateSalesOffice(value) {
   state.salesDetailMode = null;
   state.salesDetailReturnTo = null;
   state.filters.salesOfficeId = value || 'all';
-  state.filters.salesRegion = 'all';
+  state.filters.salesBeeHubId = 'all';
   state.filters.salesCityQuery = '';
   renderView();
 }
 
-function updateSalesRegion(value) {
+function updateSalesBeeHub(value) {
   cancelSalesCityRenderTimer();
   state.salesDetailMode = null;
   state.salesDetailReturnTo = null;
-  state.filters.salesRegion = value || 'all';
-  state.filters.salesCountry = 'all';
-  state.filters.salesCityId = 'all';
-  state.filters.salesOfficeId = 'all';
+  state.filters.salesBeeHubId = value || 'all';
   state.filters.salesCityQuery = '';
   renderView();
 }
@@ -790,7 +795,7 @@ function clearSubjectSelection() {
   state.filters.subjectCountry = 'all';
   state.filters.subjectCityId = 'all';
   state.filters.subjectOfficeId = 'all';
-  state.filters.subjectRegion = 'all';
+  state.filters.subjectBeeHubId = 'all';
   state.filters.subjectCityQuery = '';
   renderView();
 }
@@ -807,7 +812,7 @@ function backToCityFromSubjectOfficeDetail() {
   state.subjectDetailMode = 'city';
   state.subjectDetailReturnTo = 'subjects';
   state.filters.subjectOfficeId = 'all';
-  state.filters.subjectRegion = 'all';
+  state.filters.subjectBeeHubId = 'all';
   state.filters.subjectCityQuery = '';
   renderView();
 }
@@ -823,7 +828,7 @@ function handleSubjectCitySelect(city) {
   state.filters.subjectCityId = city.id;
   state.filters.subjectCityQuery = '';
   state.filters.subjectOfficeId = 'all';
-  state.filters.subjectRegion = 'all';
+  state.filters.subjectBeeHubId = 'all';
   renderView();
 }
 
@@ -838,7 +843,7 @@ function handleSubjectOfficeSelect(officeOrId, returnTo = 'subjects') {
   state.subjectDetailMode = 'office';
   state.subjectDetailReturnTo = returnTo === 'city' ? 'city' : 'subjects';
   state.filters.subjectOfficeId = office.id;
-  state.filters.subjectRegion = 'all';
+  state.filters.subjectBeeHubId = 'all';
   state.filters.subjectCityQuery = '';
   renderView();
 }
@@ -853,7 +858,7 @@ function updateSubjectCountry(value) {
   state.filters.subjectCountry = value || 'all';
   state.filters.subjectCityId = 'all';
   state.filters.subjectOfficeId = 'all';
-  state.filters.subjectRegion = 'all';
+  state.filters.subjectBeeHubId = 'all';
   state.filters.subjectCityQuery = '';
   renderView();
 }
@@ -878,7 +883,7 @@ function updateSubjectCityQuery(value) {
   state.filters.subjectCityQuery = String(value || '');
   state.filters.subjectCityId = 'all';
   state.filters.subjectOfficeId = 'all';
-  state.filters.subjectRegion = 'all';
+  state.filters.subjectBeeHubId = 'all';
 
   state.subjectCityRenderTimer = setTimeout(() => {
     state.subjectCityRenderTimer = null;
@@ -894,22 +899,19 @@ function updateSubjectOffice(value) {
   state.subjectDetailMode = null;
   state.subjectDetailReturnTo = null;
   state.filters.subjectOfficeId = value || 'all';
-  state.filters.subjectRegion = 'all';
+  state.filters.subjectBeeHubId = 'all';
   state.filters.subjectCityQuery = '';
   renderView();
 }
 
-function updateSubjectRegion(value) {
+function updateSubjectBeeHub(value) {
   if (state.subjectCityRenderTimer) {
     clearTimeout(state.subjectCityRenderTimer);
     state.subjectCityRenderTimer = null;
   }
   state.subjectDetailMode = null;
   state.subjectDetailReturnTo = null;
-  state.filters.subjectRegion = value || 'all';
-  state.filters.subjectCountry = 'all';
-  state.filters.subjectCityId = 'all';
-  state.filters.subjectOfficeId = 'all';
+  state.filters.subjectBeeHubId = value || 'all';
   state.filters.subjectCityQuery = '';
   renderView();
 }

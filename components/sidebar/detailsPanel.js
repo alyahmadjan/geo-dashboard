@@ -426,10 +426,12 @@ export function createDetailsPanel(root) {
     selectedCityId,
     selectedBeeHubId,
     overview,
+    offices,
     onCitySelect,
     onCityQueryChange,
     onCountryChange,
     onBeeHubClick,
+    onOfficeChange,
   }) {
     // Build a map of cities to beeHub counts using ALL beeHubs (not filtered by selected city)
     const cityBeeHubCounts = new Map();
@@ -462,6 +464,13 @@ export function createDetailsPanel(root) {
             ${countries.map((country) => `<option value="${country}" ${filters.country === country ? 'selected' : ''}>${country}</option>`).join('')}
           </select>
         </div>
+        <div class="field-group">
+          <label for="beeHubOfficeFilter">Office</label>
+          <select id="beeHubOfficeFilter">
+            <option value="all">All offices</option>
+            ${(offices || []).map((office) => `<option value="${office.id}" ${filters.beeHubOfficeId === office.id ? 'selected' : ''}>${office.name}</option>`).join('')}
+          </select>
+        </div>
       </section>
 
       <div class="metric-grid">
@@ -487,6 +496,7 @@ export function createDetailsPanel(root) {
     `;
 
     bindCityFilters(root, { onCityQueryChange, onCountryChange });
+    bindSelect(root, '#beeHubOfficeFilter', onOfficeChange);
     attachCityEvents(root, { cities, onCitySelect });
     root.querySelectorAll('[data-beehub-id]').forEach((button) => {
       button.addEventListener('click', () => {
@@ -741,13 +751,13 @@ function renderSalesLayer({
     selectedCountry,
     selectedCityId,
     selectedOfficeId,
-    selectedRegion,
+    selectedBeeHub,
     cities,
     offices,
     overview,
-    regionSummary,
     citySummary,
     officeSummary,
+    beeHubSummary,
     selectedCityDetails,
     selectedOfficeDetails,
     onCountryChange,
@@ -755,7 +765,7 @@ function renderSalesLayer({
     onCitySelect,
     onOfficeChange,
     onOfficeSelect,
-    onRegionChange,
+    onBeeHubChange,
     onBackToSales,
     backButtonLabel,
   }) {
@@ -819,10 +829,10 @@ function renderSalesLayer({
           </select>
         </div>
         <div class="field-group">
-          <label for="salesRegionFilter">Region</label>
-          <select id="salesRegionFilter">
-            <option value="all">All regions</option>
-            ${(regionSummary || []).map((region) => `<option value="${region.region}" ${selectedRegion === region.region ? 'selected' : ''}>${region.region}</option>`).join('')}
+          <label for="salesBeeHubFilter">beeHub</label>
+          <select id="salesBeeHubFilter">
+            <option value="all">All beeHubs</option>
+            ${(beeHubSummary || []).map((beeHub) => `<option value="${beeHub.id}" ${selectedBeeHub === beeHub.id ? 'selected' : ''}>${beeHub.name}</option>`).join('')}
           </select>
         </div>
       </section>
@@ -833,21 +843,6 @@ function renderSalesLayer({
         ${renderMetricCard('Cities', formatNumber(overview.cities))}
         ${renderMetricCard('Offices', formatNumber(overview.offices))}
       </div>
-
-      <section class="panel-section">
-        <h3>Regional aggregation</h3>
-        <div class="scroll-box city-scroll">
-          ${(regionSummary || []).length
-            ? regionSummary.map((item) => renderSalesControlRow(
-                item.region,
-                `${formatNumber(item.deals)} deals`,
-                `${formatNumber(item.records)} records · ${formatCurrency(item.amount)}`,
-                { region: item.region },
-                selectedRegion === item.region,
-              )).join('')
-            : '<div class="empty-state">No sales records match the current filters.</div>'}
-        </div>
-      </section>
 
       <section class="panel-section">
         <h3>City aggregation</h3>
@@ -878,11 +873,26 @@ function renderSalesLayer({
             : '<div class="empty-state">No offices available for the current filters.</div>'}
         </div>
       </section>
+
+      <section class="panel-section">
+        <h3>beeHub aggregation</h3>
+        <div class="scroll-box city-scroll">
+          ${(beeHubSummary || []).length
+            ? beeHubSummary.map((item) => renderSalesControlRow(
+                item.name,
+                formatCurrency(item.salesTotal),
+                `${formatNumber(item.records)} records · ${item.city?.name || '—'}`,
+                { beeHubId: item.id },
+                selectedBeeHub === item.id,
+              )).join('')
+            : '<div class="empty-state">No beeHubs available for the current filters.</div>'}
+        </div>
+      </section>
     `;
 
     bindSelect(root, '#salesCountryFilter', onCountryChange);
     bindSelect(root, '#salesOfficeFilter', onOfficeChange);
-    bindSelect(root, '#salesRegionFilter', onRegionChange);
+    bindSelect(root, '#salesBeeHubFilter', onBeeHubChange);
     const citySearch = root.querySelector('#salesCitySearch');
     if (citySearch) {
       citySearch.addEventListener('input', (event) => {
@@ -897,19 +907,19 @@ function renderSalesLayer({
         }
       });
     });
-    root.querySelectorAll('[data-region]').forEach((button) => {
-      button.addEventListener('click', () => {
-        const region = button.dataset.region;
-        if (region) {
-          onRegionChange?.(region);
-        }
-      });
-    });
     root.querySelectorAll('[data-office-id]').forEach((button) => {
       button.addEventListener('click', () => {
         const officeId = button.dataset.officeId;
         if (officeId) {
           onOfficeSelect?.(officeId, 'sales');
+        }
+      });
+    });
+    root.querySelectorAll('[data-beehub-id]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const beeHubId = button.dataset.beehubId;
+        if (beeHubId) {
+          onBeeHubChange?.(beeHubId);
         }
       });
     });
@@ -921,13 +931,13 @@ function renderSalesLayer({
     selectedCountry,
     selectedCityId,
     selectedOfficeId,
-    selectedRegion,
+    selectedBeeHub,
     cities,
     offices,
     overview,
-    regionSummary,
     citySummary,
     officeSummary,
+    beeHubSummary,
     selectedCityDetails,
     selectedOfficeDetails,
     onCountryChange,
@@ -935,7 +945,7 @@ function renderSalesLayer({
     onCitySelect,
     onOfficeChange,
     onOfficeSelect,
-    onRegionChange,
+    onBeeHubChange,
     onBackToSubjects,
     backButtonLabel,
   }) {
@@ -999,10 +1009,10 @@ function renderSalesLayer({
           </select>
         </div>
         <div class="field-group">
-          <label for="subjectRegionFilter">Region</label>
-          <select id="subjectRegionFilter">
-            <option value="all">All regions</option>
-            ${(regionSummary || []).map((region) => `<option value="${region.region}" ${selectedRegion === region.region ? 'selected' : ''}>${region.region}</option>`).join('')}
+          <label for="subjectBeeHubFilter">beeHub</label>
+          <select id="subjectBeeHubFilter">
+            <option value="all">All beeHubs</option>
+            ${(beeHubSummary || []).map((beeHub) => `<option value="${beeHub.id}" ${selectedBeeHub === beeHub.id ? 'selected' : ''}>${beeHub.name}</option>`).join('')}
           </select>
         </div>
       </section>
@@ -1013,21 +1023,6 @@ function renderSalesLayer({
         ${renderMetricCard('Cities', formatNumber(overview.cities))}
         ${renderMetricCard('Offices', formatNumber(overview.offices))}
       </div>
-
-      <section class="panel-section">
-        <h3>Regional aggregation</h3>
-        <div class="scroll-box city-scroll">
-          ${(regionSummary || []).length
-            ? regionSummary.map((item) => renderSalesControlRow(
-                item.region,
-                formatNumber(item.count),
-                'Verified subjects',
-                { region: item.region },
-                selectedRegion === item.region,
-              )).join('')
-            : '<div class="empty-state">No subject records match the current filters.</div>'}
-        </div>
-      </section>
 
       <section class="panel-section">
         <h3>City aggregation</h3>
@@ -1058,11 +1053,26 @@ function renderSalesLayer({
             : '<div class="empty-state">No offices available for the current filters.</div>'}
         </div>
       </section>
+
+      <section class="panel-section">
+        <h3>beeHub aggregation</h3>
+        <div class="scroll-box city-scroll">
+          ${(beeHubSummary || []).length
+            ? beeHubSummary.map((item) => renderSalesControlRow(
+                item.name,
+                formatNumber(item.count),
+                `${item.city?.name || '—'} · ${item.resolvedOfficeName || 'Unassigned'}`,
+                { beeHubId: item.id },
+                selectedBeeHub === item.id,
+              )).join('')
+            : '<div class="empty-state">No beeHubs available for the current filters.</div>'}
+        </div>
+      </section>
     `;
 
     bindSelect(root, '#subjectCountryFilter', onCountryChange);
     bindSelect(root, '#subjectOfficeFilter', onOfficeChange);
-    bindSelect(root, '#subjectRegionFilter', onRegionChange);
+    bindSelect(root, '#subjectBeeHubFilter', onBeeHubChange);
     const citySearch = root.querySelector('#subjectCitySearch');
     if (citySearch) {
       citySearch.addEventListener('input', (event) => {
@@ -1077,19 +1087,19 @@ function renderSalesLayer({
         }
       });
     });
-    root.querySelectorAll('[data-region]').forEach((button) => {
-      button.addEventListener('click', () => {
-        const region = button.dataset.region;
-        if (region) {
-          onRegionChange?.(region);
-        }
-      });
-    });
     root.querySelectorAll('[data-office-id]').forEach((button) => {
       button.addEventListener('click', () => {
         const officeId = button.dataset.officeId;
         if (officeId) {
           onOfficeSelect?.(officeId, 'subjects');
+        }
+      });
+    });
+    root.querySelectorAll('[data-beehub-id]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const beeHubId = button.dataset.beehubId;
+        if (beeHubId) {
+          onBeeHubChange?.(beeHubId);
         }
       });
     });

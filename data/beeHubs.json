@@ -1,0 +1,24 @@
+[
+  {
+    "id": "bh1",
+    "name": "Manhattan Brew Hub",
+    "address": "120 Liberty St, New York, USA",
+    "region": "North America",
+    "lat": 40.7098,
+    "lng": -74.0086,
+    "cityId": "c1",
+    "officeId": "c1-o2",
+    "hoursOfOperation": "Mon-Fri 07:00-17:00"
+  },
+  {
+    "id": "bh2",
+    "name": "West End Coffee Hub",
+    "address": "44 Soho Square, London, UK",
+    "region": "Europe",
+    "lat": 51.5142,
+    "lng": -0.1357,
+    "cityId": "c2",
+    "officeId": "c2-o1",
+    "hoursOfOperation": "Daily 08:00-18:00"
+  }
+]

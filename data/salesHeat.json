@@ -1,0 +1,74 @@
+[
+  {
+    "id": "sh-01",
+    "region": "North America",
+    "purchaserCity": "New York",
+    "serviceOfficeId": "c2-o1",
+    "lat": 40.7128,
+    "lng": -74.006,
+    "count": 180
+  },
+  {
+    "id": "sh-02",
+    "region": "North America",
+    "purchaserCity": "Toronto",
+    "serviceOfficeId": "c1-o1",
+    "lat": 43.6532,
+    "lng": -79.3832,
+    "count": 130
+  },
+  {
+    "id": "sh-03",
+    "region": "Europe",
+    "purchaserCity": "London",
+    "serviceOfficeId": "c4-o1",
+    "lat": 51.5074,
+    "lng": -0.1278,
+    "count": 145
+  },
+  {
+    "id": "sh-04",
+    "region": "Europe",
+    "purchaserCity": "Paris",
+    "serviceOfficeId": "c2-o2",
+    "lat": 48.8566,
+    "lng": 2.3522,
+    "count": 110
+  },
+  {
+    "id": "sh-05",
+    "region": "Asia",
+    "purchaserCity": "Singapore",
+    "serviceOfficeId": "c2-o1",
+    "lat": 1.3521,
+    "lng": 103.8198,
+    "count": 95
+  },
+  {
+    "id": "sh-06",
+    "region": "Asia",
+    "purchaserCity": "Tokyo",
+    "serviceOfficeId": "c3-o1",
+    "lat": 35.6762,
+    "lng": 139.6503,
+    "count": 160
+  },
+  {
+    "id": "sh-07",
+    "region": "Oceania",
+    "purchaserCity": "Sydney",
+    "serviceOfficeId": "c4-o1",
+    "lat": -33.8688,
+    "lng": 151.2093,
+    "count": 70
+  },
+  {
+    "id": "sh-08",
+    "region": "South America",
+    "purchaserCity": "São Paulo",
+    "serviceOfficeId": "c1-o1",
+    "lat": -23.5505,
+    "lng": -46.6333,
+    "count": 85
+  }
+]

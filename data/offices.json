@@ -8,8 +8,10 @@
     "lng": -73.886,
     "status": "active",
     "teamSize": 47,
-    "category": "HQ",
-    "phone": "+1 555-0100"
+    "category": "Regional",
+    "phone": "+1 555-0100",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c1-o2",
@@ -21,7 +23,9 @@
     "status": "active",
     "teamSize": 59,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c1-o1"
   },
   {
     "id": "c1-o3",
@@ -33,7 +37,9 @@
     "status": "limited",
     "teamSize": 71,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c1-o1"
   },
   {
     "id": "c2-o1",
@@ -45,7 +51,9 @@
     "status": "active",
     "teamSize": 47,
     "category": "Regional",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c2-o2",
@@ -57,7 +65,9 @@
     "status": "active",
     "teamSize": 59,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c2-o1"
   },
   {
     "id": "c2-o3",
@@ -69,7 +79,9 @@
     "status": "limited",
     "teamSize": 71,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c2-o1"
   },
   {
     "id": "c3-o1",
@@ -80,8 +92,10 @@
     "lng": 55.3908,
     "status": "active",
     "teamSize": 47,
-    "category": "HQ",
-    "phone": "+1 555-0100"
+    "category": "Regional",
+    "phone": "+1 555-0100",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c3-o2",
@@ -93,7 +107,9 @@
     "status": "active",
     "teamSize": 59,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c3-o1"
   },
   {
     "id": "c3-o3",
@@ -105,7 +121,9 @@
     "status": "limited",
     "teamSize": 71,
     "category": "Support",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c3-o1"
   },
   {
     "id": "c4-o1",
@@ -116,8 +134,10 @@
     "lng": 103.9398,
     "status": "active",
     "teamSize": 47,
-    "category": "HQ",
-    "phone": "+1 555-0100"
+    "category": "Regional",
+    "phone": "+1 555-0100",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c4-o2",
@@ -129,7 +149,9 @@
     "status": "active",
     "teamSize": 59,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c4-o1"
   },
   {
     "id": "c4-o3",
@@ -141,7 +163,9 @@
     "status": "limited",
     "teamSize": 71,
     "category": "Research",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c4-o1"
   },
   {
     "id": "c5-o1",
@@ -152,8 +176,10 @@
     "lng": -79.2632,
     "status": "active",
     "teamSize": 47,
-    "category": "HQ",
-    "phone": "+1 555-0100"
+    "category": "Regional",
+    "phone": "+1 555-0100",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c5-o2",
@@ -165,7 +191,9 @@
     "status": "active",
     "teamSize": 59,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c5-o1"
   },
   {
     "id": "c5-o3",
@@ -177,7 +205,9 @@
     "status": "limited",
     "teamSize": 71,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c5-o1"
   },
   {
     "id": "c6-o1",
@@ -188,8 +218,10 @@
     "lng": 151.3293,
     "status": "active",
     "teamSize": 47,
-    "category": "HQ",
-    "phone": "+1 555-0100"
+    "category": "Regional",
+    "phone": "+1 555-0100",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c6-o2",
@@ -201,7 +233,9 @@
     "status": "active",
     "teamSize": 59,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c6-o1"
   },
   {
     "id": "c6-o3",
@@ -213,7 +247,9 @@
     "status": "limited",
     "teamSize": 71,
     "category": "Support",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c6-o1"
   },
   {
     "id": "c7-o1",
@@ -224,8 +260,10 @@
     "lng": 139.7703,
     "status": "active",
     "teamSize": 47,
-    "category": "HQ",
-    "phone": "+1 555-0100"
+    "category": "Regional",
+    "phone": "+1 555-0100",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c7-o2",
@@ -237,7 +275,9 @@
     "status": "active",
     "teamSize": 59,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c7-o1"
   },
   {
     "id": "c7-o3",
@@ -249,7 +289,9 @@
     "status": "limited",
     "teamSize": 71,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c7-o1"
   },
   {
     "id": "c8-o1",
@@ -260,8 +302,10 @@
     "lng": 2.4722,
     "status": "active",
     "teamSize": 47,
-    "category": "HQ",
-    "phone": "+1 555-0100"
+    "category": "Regional",
+    "phone": "+1 555-0100",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c8-o2",
@@ -273,7 +317,9 @@
     "status": "active",
     "teamSize": 59,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c8-o1"
   },
   {
     "id": "c8-o3",
@@ -285,7 +331,9 @@
     "status": "limited",
     "teamSize": 71,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c8-o1"
   },
   {
     "id": "c9-o1",
@@ -296,8 +344,10 @@
     "lng": 13.525,
     "status": "active",
     "teamSize": 47,
-    "category": "HQ",
-    "phone": "+1 555-0100"
+    "category": "Regional",
+    "phone": "+1 555-0100",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c9-o2",
@@ -309,7 +359,9 @@
     "status": "active",
     "teamSize": 59,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c9-o1"
   },
   {
     "id": "c9-o3",
@@ -321,7 +373,9 @@
     "status": "limited",
     "teamSize": 71,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c9-o1"
   },
   {
     "id": "c10-o1",
@@ -332,8 +386,10 @@
     "lng": -46.5133,
     "status": "active",
     "teamSize": 47,
-    "category": "HQ",
-    "phone": "+1 555-0100"
+    "category": "Regional",
+    "phone": "+1 555-0100",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c10-o2",
@@ -345,7 +401,9 @@
     "status": "active",
     "teamSize": 59,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c10-o1"
   },
   {
     "id": "c10-o3",
@@ -357,7 +415,9 @@
     "status": "limited",
     "teamSize": 71,
     "category": "Branch",
-    "phone": "+1 555-0100"
+    "phone": "+1 555-0100",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c10-o1"
   },
   {
     "id": "c11-o1",
@@ -368,8 +428,10 @@
     "lng": 145.0831,
     "status": "active",
     "teamSize": 52,
-    "category": "HQ",
-    "phone": "+61 555-0111"
+    "category": "Regional",
+    "phone": "+61 555-0111",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c11-o2",
@@ -381,7 +443,9 @@
     "status": "active",
     "teamSize": 44,
     "category": "Branch",
-    "phone": "+61 555-0111"
+    "phone": "+61 555-0111",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c11-o1"
   },
   {
     "id": "c11-o3",
@@ -393,7 +457,9 @@
     "status": "limited",
     "teamSize": 31,
     "category": "Branch",
-    "phone": "+61 555-0111"
+    "phone": "+61 555-0111",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c11-o1"
   },
   {
     "id": "c12-o1",
@@ -404,8 +470,10 @@
     "lng": 115.9813,
     "status": "active",
     "teamSize": 38,
-    "category": "HQ",
-    "phone": "+61 555-0122"
+    "category": "Regional",
+    "phone": "+61 555-0122",
+    "officeType": "regional",
+    "parentOfficeId": null
   },
   {
     "id": "c12-o2",
@@ -417,7 +485,9 @@
     "status": "active",
     "teamSize": 29,
     "category": "Branch",
-    "phone": "+61 555-0122"
+    "phone": "+61 555-0122",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c12-o1"
   },
   {
     "id": "c12-o3",
@@ -429,6 +499,8 @@
     "status": "limited",
     "teamSize": 24,
     "category": "Branch",
-    "phone": "+61 555-0122"
+    "phone": "+61 555-0122",
+    "officeType": "sub-regional",
+    "parentOfficeId": "c12-o1"
   }
 ]

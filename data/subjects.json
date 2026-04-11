@@ -1,0 +1,132 @@
+[
+  {
+    "id": "sub1",
+    "region": "North America",
+    "cityId": "c1",
+    "verifiedAt": "2026-01-08",
+    "lat": 40.7308,
+    "lng": -73.9973,
+    "status": "verified",
+    "officeId": "c1-o1"
+  },
+  {
+    "id": "sub2",
+    "region": "North America",
+    "cityId": "c5",
+    "verifiedAt": "2026-01-14",
+    "lat": 43.6537,
+    "lng": -79.3839,
+    "status": "verified",
+    "officeId": "c1-o2"
+  },
+  {
+    "id": "sub3",
+    "region": "Europe",
+    "cityId": "c2",
+    "verifiedAt": "2026-02-04",
+    "lat": 51.5079,
+    "lng": -0.1198,
+    "status": "verified",
+    "officeId": "c2-o1"
+  },
+  {
+    "id": "sub4",
+    "region": "Europe",
+    "cityId": "c8",
+    "verifiedAt": "2026-02-19",
+    "lat": 48.8569,
+    "lng": 2.3358,
+    "status": "verified",
+    "officeId": "c8-o2"
+  },
+  {
+    "id": "sub5",
+    "region": "Asia",
+    "cityId": "c4",
+    "verifiedAt": "2026-03-02",
+    "lat": 1.3551,
+    "lng": 103.8207,
+    "status": "verified",
+    "officeId": "c4-o1"
+  },
+  {
+    "id": "sub6",
+    "region": "Asia",
+    "cityId": "c7",
+    "verifiedAt": "2026-03-11",
+    "lat": 35.6769,
+    "lng": 139.667,
+    "status": "verified",
+    "officeId": "c7-o2"
+  },
+  {
+    "id": "sub7",
+    "region": "Oceania",
+    "cityId": "c6",
+    "verifiedAt": "2026-03-15",
+    "lat": -33.8651,
+    "lng": 151.2099,
+    "status": "verified",
+    "officeId": "c6-o1"
+  },
+  {
+    "id": "sub8",
+    "region": "South America",
+    "cityId": "c10",
+    "verifiedAt": "2026-03-27",
+    "lat": -23.5521,
+    "lng": -46.6382,
+    "status": "verified",
+    "officeId": "c10-o3"
+  },
+  {
+    "id": "sub9",
+    "region": "Middle East",
+    "cityId": "c3",
+    "verifiedAt": "2026-04-02",
+    "lat": 25.2042,
+    "lng": 55.2687,
+    "status": "verified",
+    "officeId": "c3-o1"
+  },
+  {
+    "id": "sub10",
+    "region": "Europe",
+    "cityId": "c9",
+    "verifiedAt": "2026-04-06",
+    "lat": 52.5209,
+    "lng": 13.4099,
+    "status": "verified",
+    "officeId": "c9-o2"
+  },
+  {
+    "id": "sub11",
+    "region": "North America",
+    "cityId": "c1",
+    "officeId": "c1-o3",
+    "verifiedAt": "2026-01-18",
+    "lat": 40.7412,
+    "lng": -73.9902,
+    "status": "verified"
+  },
+  {
+    "id": "sub12",
+    "region": "Europe",
+    "cityId": "c2",
+    "officeId": "c2-o3",
+    "verifiedAt": "2026-02-22",
+    "lat": 51.5112,
+    "lng": -0.1294,
+    "status": "verified"
+  },
+  {
+    "id": "sub13",
+    "region": "Asia",
+    "cityId": "c7",
+    "officeId": "c7-o1",
+    "verifiedAt": "2026-03-28",
+    "lat": 35.6884,
+    "lng": 139.6993,
+    "status": "verified"
+  }
+]

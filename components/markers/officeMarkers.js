@@ -27,6 +27,7 @@ export function createOfficeMarker(office, city, styles, callbacks = {}) {
       <strong>${office.name}</strong><br />
       <span>${city ? city.name : 'Unknown city'}</span><br />
       <span>Status: ${office.status}</span><br />
+      <span>Type: ${office.officeType || office.category || '—'}</span><br />
       <span>Team size: ${office.teamSize || '—'}</span>
     </div>
   `);

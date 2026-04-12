@@ -1,11 +1,9 @@
 const FILES = {
   cities: 'cities.json',
   offices: 'offices.json',
-  incidents: 'incidents.json',
   sales: 'sales.json',
   beeHubs: 'beeHubs.json',
   subjects: 'subjects.json',
-  kpis: 'kpis.json',
   settings: 'settings.json',
 };
 
@@ -48,25 +46,21 @@ export async function loadDataset(name) {
 }
 
 export async function loadAllData() {
-  const [cities, offices, incidents, sales, beeHubs, subjects, kpis, settings] = await Promise.all([
+  const [cities, offices, sales, beeHubs, subjects, settings] = await Promise.all([
     loadDataset('cities'),
     loadDataset('offices'),
-    loadDataset('incidents'),
     loadDataset('sales'),
     loadDataset('beeHubs'),
     loadDataset('subjects'),
-    loadDataset('kpis'),
     loadDataset('settings'),
   ]);
 
   return {
     cities,
     offices,
-    incidents,
     sales,
     beeHubs,
     subjects,
-    kpis,
     settings: settings && typeof settings === 'object' ? settings : {},
   };
 }

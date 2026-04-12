@@ -22,7 +22,7 @@ export function createMapView(containerId, config = {}) {
     }
 
     if (latLngs.length === 1) {
-      map.setView(latLngs[0], Math.max(zoom, 6));
+      map.setView(latLngs[0], Math.max(zoom, 10));
       return;
     }
 

@@ -4,8 +4,22 @@ import { createOfficeMarker } from '../components/markers/officeMarkers.js';
 import { createBeeHubMarker } from '../components/markers/beeHubMarkers.js';
 import { createHeatLayer } from '../components/map/heatLayer.js';
 
+function addGroupToMap(map, layer) {
+  if (!map.hasLayer(layer)) {
+    layer.addTo(map);
+  }
+}
+
+function removeGroupFromMap(map, layer) {
+  if (map.hasLayer(layer)) {
+    map.removeLayer(layer);
+  }
+}
+
 export function createMapService(containerId, settings = {}) {
   const mapView = createMapView(containerId, settings.map || {});
+  const map = mapView.map;
+
   const cityLayer = L.layerGroup();
   const officeLayer = L.layerGroup();
   const beeHubLayer = L.layerGroup();
@@ -35,59 +49,51 @@ export function createMapService(containerId, settings = {}) {
       1: 'rgba(236,72,153,0.88)',
     },
   });
+
+  const cityMarkers = new Map();
   const officeMarkers = new Map();
   const beeHubMarkers = new Map();
-  let activeLayer = 'city';
+  let mapClickHandler = null;
 
-  function clearAll() {
-    mapView.clearLayer(cityLayer);
-    mapView.clearLayer(officeLayer);
-    mapView.clearLayer(beeHubLayer);
-    if (mapView.map.hasLayer(salesHeatLayer)) {
-      mapView.map.removeLayer(salesHeatLayer);
-    }
-    if (mapView.map.hasLayer(subjectHeatLayer)) {
-      mapView.map.removeLayer(subjectHeatLayer);
-    }
+  function clearLayers() {
+    [cityLayer, officeLayer, beeHubLayer].forEach((layer) => layer.clearLayers());
+    removeGroupFromMap(map, cityLayer);
+    removeGroupFromMap(map, officeLayer);
+    removeGroupFromMap(map, beeHubLayer);
+    removeGroupFromMap(map, salesHeatLayer);
+    removeGroupFromMap(map, subjectHeatLayer);
+    cityMarkers.clear();
     officeMarkers.clear();
     beeHubMarkers.clear();
   }
 
-  function setLayer(layerName) {
-    activeLayer = layerName;
-  }
-
-  function renderCities(cities, callbacks = {}) {
-    clearAll();
-    setLayer('city');
-
+  function renderCities(cities = [], callbacks = {}) {
+    clearLayers();
     const points = [];
 
-    cityLayer.addTo(mapView.map);
+    addGroupToMap(map, cityLayer);
     cities.forEach((city) => {
       const marker = createCityMarker(city, settings.markerStyles?.city, {
         onClick: callbacks.onCityClick,
       });
       marker.addTo(cityLayer);
+      cityMarkers.set(city.id, marker);
       points.push([city.lat, city.lng]);
     });
 
     mapView.fitToLatLngs(points);
   }
 
-  function renderOffices(offices, callbacks = {}) {
-    clearAll();
-    setLayer('office');
-
+  function renderOffices(offices = [], callbacks = {}) {
+    clearLayers();
     const points = [];
 
-    officeLayer.addTo(mapView.map);
+    addGroupToMap(map, officeLayer);
     offices.forEach((office) => {
       const city = callbacks.getCityById?.(office.cityId) || null;
       const marker = createOfficeMarker(office, city, settings.markerStyles?.office, {
         onClick: callbacks.onOfficeClick,
       });
-
       marker.addTo(officeLayer);
       officeMarkers.set(office.id, marker);
       points.push([office.lat, office.lng]);
@@ -96,13 +102,11 @@ export function createMapService(containerId, settings = {}) {
     mapView.fitToLatLngs(points);
   }
 
-  function renderBeeHubs(beeHubs, callbacks = {}) {
-    clearAll();
-    setLayer('beeHub');
-
+  function renderBeeHubs(beeHubs = [], callbacks = {}) {
+    clearLayers();
     const points = [];
 
-    beeHubLayer.addTo(mapView.map);
+    addGroupToMap(map, beeHubLayer);
     beeHubs.forEach((beeHub) => {
       const marker = createBeeHubMarker(beeHub, settings.markerStyles?.beeHub, {
         onClick: callbacks.onBeeHubClick,
@@ -116,21 +120,87 @@ export function createMapService(containerId, settings = {}) {
   }
 
   function renderSalesHeatmap(points = []) {
-    clearAll();
-    setLayer('sales');
+    clearLayers();
     salesHeatLayer.setPoints(points);
-    salesHeatLayer.addTo(mapView.map);
+    addGroupToMap(map, salesHeatLayer);
     mapView.fitToLatLngs(points.map((point) => [point.lat, point.lng]));
   }
 
   function renderSubjectHeatmap(points = []) {
-    clearAll();
-    setLayer('subject');
-    const validPoints = Array.isArray(points) ? points : [];
-    subjectHeatLayer.setPoints(validPoints);
-    subjectHeatLayer.addTo(mapView.map);
-    if (validPoints.length > 0) {
-      mapView.fitToLatLngs(validPoints.map((point) => [point.lat, point.lng]));
+    clearLayers();
+    subjectHeatLayer.setPoints(points);
+    addGroupToMap(map, subjectHeatLayer);
+    mapView.fitToLatLngs(points.map((point) => [point.lat, point.lng]));
+  }
+
+  function renderScene(scene = {}, options = {}) {
+    clearLayers();
+
+    if (mapClickHandler) {
+      map.off('click', mapClickHandler);
+      mapClickHandler = null;
+    }
+
+    if (typeof scene.onMapClick === 'function') {
+      mapClickHandler = (event) => scene.onMapClick(event);
+      map.on('click', mapClickHandler);
+    }
+
+    const points = [];
+
+    if (scene.showCities) {
+      addGroupToMap(map, cityLayer);
+      (scene.cities || []).forEach((city) => {
+        const marker = createCityMarker(city, settings.markerStyles?.city, {
+          onClick: scene.onCityClick,
+        });
+        marker.addTo(cityLayer);
+        cityMarkers.set(city.id, marker);
+        points.push([city.lat, city.lng]);
+      });
+    }
+
+    if (scene.showOffices) {
+      addGroupToMap(map, officeLayer);
+      (scene.offices || []).forEach((office) => {
+        const city = scene.getCityById?.(office.cityId) || null;
+        const marker = createOfficeMarker(office, city, settings.markerStyles?.office, {
+          onClick: scene.onOfficeClick,
+        });
+        marker.addTo(officeLayer);
+        officeMarkers.set(office.id, marker);
+        points.push([office.lat, office.lng]);
+      });
+    }
+
+    if (scene.showBeeHubs) {
+      addGroupToMap(map, beeHubLayer);
+      (scene.beeHubs || []).forEach((beeHub) => {
+        const marker = createBeeHubMarker(beeHub, settings.markerStyles?.beeHub, {
+          onClick: scene.onBeeHubClick,
+        });
+        marker.addTo(beeHubLayer);
+        beeHubMarkers.set(beeHub.id, marker);
+        points.push([beeHub.lat, beeHub.lng]);
+      });
+    }
+
+    if (scene.showSales) {
+      salesHeatLayer.setPoints(scene.salesHeatPoints || []);
+      addGroupToMap(map, salesHeatLayer);
+      points.push(...(scene.salesHeatPoints || []).map((point) => [point.lat, point.lng]));
+    }
+
+    if (scene.showSubjects) {
+      subjectHeatLayer.setPoints(scene.subjectHeatPoints || []);
+      addGroupToMap(map, subjectHeatLayer);
+      points.push(...(scene.subjectHeatPoints || []).map((point) => [point.lat, point.lng]));
+    }
+
+    const shouldFit = options.fitToScene !== false;
+    if (shouldFit) {
+      const focusPoints = Array.isArray(scene.focusPoints) && scene.focusPoints.length ? scene.focusPoints : points;
+      mapView.fitToLatLngs(focusPoints);
     }
   }
 
@@ -149,25 +219,24 @@ export function createMapService(containerId, settings = {}) {
   }
 
   function resetView() {
-    activeLayer = 'city';
-    clearAll();
-    cityLayer.addTo(mapView.map);
+    if (mapClickHandler) {
+      map.off('click', mapClickHandler);
+      mapClickHandler = null;
+    }
+    clearLayers();
     mapView.fitToLatLngs([]);
   }
 
   return {
-    map: mapView.map,
+    map,
     renderCities,
     renderOffices,
     renderBeeHubs,
     renderSalesHeatmap,
     renderSubjectHeatmap,
-    setLayer,
+    renderScene,
     resetView,
     openOfficePopup,
     openBeeHubPopup,
-    get activeLayer() {
-      return activeLayer;
-    },
   };
 }
